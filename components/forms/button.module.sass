@@ -1,0 +1,44 @@
+@import ../variables
+
+._container
+    display: flex
+    justify-content: center
+    align-items: center
+    height: 45px
+    cursor: pointer
+    padding: 0 10px
+    border-radius: 8px
+    font-size: 17px
+    font-weight: 500
+    column-gap: 5px
+    position: relative
+    overflow: hidden
+
+    &:disabled
+        opacity: 0.7
+        cursor: default
+
+    ._icon
+        display: flex
+        justify-content: center
+        align-items: center
+
+    ._bubble
+        position: absolute
+        border-radius: 50%
+        width: 100px
+        height: 100px
+        animation: bubble 0.5s ease-in-out   
+        transform-origin: 'center'
+        transform: translate(-50%, -50%)
+
+@keyframes bubble 
+    0%
+        opacity: 1
+        width: 0
+        height: 0
+
+    100%
+        opacity: 0
+        width: calc( var(--button-width) * 2.5 )
+        height: calc( var(--button-width) * 2.5 )

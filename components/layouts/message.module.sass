@@ -1,0 +1,49 @@
+@import ../variables
+
+._container
+    width: 100%
+    display: grid
+
+    p
+        display: flex
+        flex-direction: column
+        row-gap: 8px
+        height: fit-content
+        width: fit-content
+        max-width: 85%
+        padding: 12px
+        border-radius: 10px
+        background: $white-color
+        box-shadow: 0 0 2px 0 get-color-level($black-color, 5)
+        border: 1px solid get-color-level($main-color, 10)
+        font-family: $main-font-family
+        font-size: 14px
+        letter-spacing: 0.2px
+        line-height: 25px
+        color: $black-color
+
+        span
+            display: flex
+            justify-content: center
+            align-items: center
+            column-gap: 5px
+            width: fit-content
+            height: 40px
+            padding: 0 10px
+            border-radius: 30px
+            border: 1px solid get-color-level($main-color, 5)
+            background: get-color-level($main-color, 5)
+            font-size: 13.5px
+            color: $black-color
+            font-family: $main-font-family
+            font-weight: 500
+
+            svg
+                font-size: 15px
+                color: $green-color
+
+    ._result
+        justify-self: flex-start
+
+    ._comment
+        justify-self: flex-end

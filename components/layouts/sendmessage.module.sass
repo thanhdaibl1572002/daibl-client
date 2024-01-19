@@ -1,0 +1,25 @@
+@import ../variables
+
+._container
+    width: 100%
+    height: 15%
+    padding: 15px
+
+    ._form
+        display: flex
+        align-items: center
+        width: 100%
+        height: fit-content
+        padding: 5px
+        column-gap: 5px
+        background: $white-color
+        position: relative
+        box-shadow: 0 0 2px 0 get-color-level($black-color, 5)
+        border: 1px solid get-color-level($main-color, 10)
+        border-radius: 8px
+
+        ._send
+            position: absolute
+            top: 50%
+            right: 15px
+            transform: translateY(-50%)

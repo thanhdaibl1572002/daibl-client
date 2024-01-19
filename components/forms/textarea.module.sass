@@ -1,0 +1,55 @@
+@import ../variables
+
+._container
+    display: flex
+    flex-direction: column
+    row-gap: 10px
+
+    label
+        font-size: 15.5px
+        font-weight: 500
+        display: flex
+        align-items: center
+        column-gap: 5px
+        
+        svg
+            font-size: 17px
+            color: $main-color
+
+    ._input
+        position: relative
+
+        textarea
+            padding: 15px
+            font-size: 15.5px
+            border: 1px solid get-color-level($main-color, $level: 20)
+            resize: none
+            font-family: $main-font-family
+
+            &::placeholder
+                font-family: $main-font-family
+                font-size: 13.5px
+                font-weight: 400
+                color: get-color-level($black-color, $level: 60)
+
+            &:focus
+                border: 2px solid get-color-level($main-color, $level: 100)
+
+        ._show__password
+            position: absolute
+            top: 50%
+            right: 10px
+            transform: translateY(-50%)
+            cursor: pointer
+            font-size: 18px
+            color: $main-color
+
+    span
+        font-size: 13px
+        color: $red-color
+        display: flex
+        align-items: center
+        column-gap: 5px
+
+        svg
+            font-size: 15px

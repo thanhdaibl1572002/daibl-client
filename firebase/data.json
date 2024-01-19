@@ -1,0 +1,27 @@
+{
+    "data": {
+        "unique-auth-id-1": {
+            "messages": {
+                "auth-id-1-unique-message-id-1": {
+                    "isComplete": false,
+                    "isResult": true,
+                    "text": "This is message 1 of auth id 1"
+                }
+            }
+        },
+        "unique-auth-id-2": {
+            "messages": {
+                "auth-id-2-unique-message-id-1": {
+                    "isComplete": false,
+                    "isResult": true,
+                    "text": "This is message 1 of auth id 2"
+                },
+                "auth-id-2-unique-message-id-2": {
+                    "isComplete": false,
+                    "isResult": true,
+                    "text": "This is message 2 of auth id 2"
+                }
+            }
+        }
+    }
+}
