@@ -6,6 +6,10 @@ import SendMessage from '@/components/layouts/SendMessage'
 import IMessage from '@/interfaces/message'
 import { ref, onValue } from 'firebase/database'
 import db from '@/firebase/db'
+import Logo from '../common/Logo'
+import Button from '../forms/Button'
+import { signOut } from 'next-auth/react'
+import { IoLogOutOutline } from 'react-icons/io5'
 
 const ChatBox: FC = ({ }) => {
 
@@ -29,6 +33,23 @@ const ChatBox: FC = ({ }) => {
 
   return (
     <div className={styles._container}>
+      <div className={styles._tools}>
+        <Logo 
+          imageWidth={35}
+          imageHeight={35}
+          textSize={8}
+        />
+        <Button
+            label=''
+            icon={<IoLogOutOutline />}
+            iconSize={20}
+            width={35}
+            height={35}
+            onClick={signOut}
+            theme='light'
+            borderRadius={6}
+        />
+      </div>
       <div
         className={styles._messages}
         ref={messagesRef}

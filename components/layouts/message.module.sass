@@ -11,6 +11,7 @@
         height: fit-content
         width: fit-content
         max-width: 85%
+        min-width: 250px
         padding: 12px
         border-radius: 10px
         background: $white-color
@@ -21,8 +22,14 @@
         letter-spacing: 0.2px
         line-height: 25px
         color: $black-color
+        position: relative
 
-        ._result
+        ._copy
+            position: absolute
+            top: 5px
+            right: 5px                
+
+        ._result__text, ._comment__text
             display: inline
             height: fit-content
             background: $white-color
@@ -33,6 +40,7 @@
             letter-spacing: 0.2px
             line-height: 25px
             color: $black-color
+            padding: 0
 
             strong
                 font-size: 15px

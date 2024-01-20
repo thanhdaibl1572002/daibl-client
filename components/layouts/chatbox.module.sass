@@ -6,7 +6,25 @@
     width: 700px
     height: 100%
     background: get-color-level($main-color, 3)
-    position: relative
+
+    ._tools
+        display: flex
+        align-items: center
+        justify-content: space-between
+        padding: 0 10px
+        width: 700px
+        height: 55px
+        position: fixed
+        z-index: 10
+        top: 0
+        left: 50%
+        transform: translateX(-50%)
+        background: $white-color
+        box-shadow: 0 0 2px 0 get-color-level($black-color, 5)
+        border-bottom: 1px solid get-color-level($main-color, 10)
+
+        @media ( max-width: 750px )
+            width: 100%
 
     ._messages
         width: 100%
@@ -14,8 +32,9 @@
         display: flex
         flex-direction: column
         row-gap: 20px
-        padding: 10px 15px
+        padding: 70px 15px 10px 15px
         overflow-y: scroll
+        position: relative
 
     @media ( max-width: 750px )
         width: 100%

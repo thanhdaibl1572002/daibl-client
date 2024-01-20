@@ -1,13 +1,14 @@
 'use client'
-import { FC, memo, useEffect, useRef, useState } from 'react'
+import { FC, MouseEvent, memo, useEffect, useRef, useState } from 'react'
 import styles from '@/components/layouts/message.module.sass'
 import Image from 'next/image'
-import { IoCheckmarkCircleOutline } from 'react-icons/io5'
+import { IoCheckmarkCircleOutline, IoCopyOutline } from 'react-icons/io5'
 import IMessage from '@/interfaces/message'
 import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
 import parse from 'html-react-parser'
+import Button from '../forms/Button'
 
 interface MessageProps {
     id: string
@@ -25,6 +26,14 @@ const Message: FC<MessageProps> = ({
 
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
+    const textResultRef = useRef<HTMLSpanElement>(null)
+    const textCommentRef = useRef<HTMLSpanElement>(null)
+
+    const copyToClipboard = (type: 'result' | 'comment'): void => {
+        const content = type === 'result' ? textResultRef.current!.textContent : textCommentRef.current!.textContent
+        content && navigator.clipboard.writeText(content.replace(/\s+/g, ' ').trim())
+    }
+
 
     useEffect(() => {
         if (isComplete) {
@@ -64,7 +73,7 @@ const Message: FC<MessageProps> = ({
             const userId = localStorage.getItem('DAIBL_userId')
             if (userId)
                 set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
-                setIsMessageComplete(true)
+            setIsMessageComplete(true)
         }
     }, [messageText, id, text, isResult, isComplete, setIsMessageComplete])
 
@@ -75,6 +84,22 @@ const Message: FC<MessageProps> = ({
         >
             {isResult ? (
                 <p className={styles._result}>
+                    {
+                        isComplete && (
+                            <a href='#' className={styles._copy}>
+                                <Button
+                                    label=''
+                                    icon={<IoCopyOutline />}
+                                    iconSize={18}
+                                    width={28}
+                                    height={28}
+                                    theme='light'
+                                    borderRadius={5}
+                                    onClick={() => copyToClipboard('result')}
+                                />
+                            </a>
+                        )
+                    }
                     <span>
                         <Image
                             src={'/images/common/logo.png'}
@@ -94,10 +119,33 @@ const Message: FC<MessageProps> = ({
                             </>
                         )}
                     </span>
-                    <span className={styles._result}>{parse(isComplete ? text : messageText)}</span>
+                    <span
+                        className={styles._result__text}
+                        ref={textResultRef}
+                    >
+                        {parse(isComplete ? text : messageText)}
+                    </span>
                 </p>
             ) : (
-                <p className={styles._comment}>
+                <p
+                    className={styles._comment}
+                >
+                    {
+                        isComplete && (
+                            <a href='#' className={styles._copy}>
+                                <Button
+                                    label=''
+                                    icon={<IoCopyOutline />}
+                                    iconSize={18}
+                                    width={28}
+                                    height={28}
+                                    theme='light'
+                                    borderRadius={5}
+                                    onClick={() => copyToClipboard('comment')}
+                                />
+                            </a>
+                        )
+                    }
                     <span>
                         <Image
                             src={'/images/common/avatar.png'}
@@ -107,7 +155,12 @@ const Message: FC<MessageProps> = ({
                         />
                         Bình luận của bạn
                     </span>
-                    {text}
+                    <span
+                        className={styles._comment__text}
+                        ref={textCommentRef}
+                    >
+                        {text}
+                    </span>
                 </p>
             )}
         </div>

@@ -2,7 +2,7 @@
 import React, { FC, ReactElement, ReactNode, useState, MouseEvent, useEffect, useRef, ButtonHTMLAttributes } from 'react'
 import styles from '@/components/forms/button.module.sass'
 import {
-    blackColor, whiteColor, blackGradientColor, mainGradientColor,
+    whiteColor, blackGradientColor, mainGradientColor,
     whiteGradientColor,
     redGradientColor,
     greenGradientColor,
@@ -20,6 +20,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     iconSize?: number | string
     icon?: ReactNode | ReactElement
     className?: string
+    borderRadius?: number | string
     theme?: 'default' | 'light' | 'dark' | 'danger' | 'warning' | 'success'
     iconPosition?: 'left' | 'right'
     onClick?: () => void
@@ -33,6 +34,7 @@ const Button: FC<ButtonProps> = ({
     iconSize = 20,
     icon,
     className,
+    borderRadius = '8px',
     theme = 'default',
     iconPosition = 'left',
     onClick,
@@ -88,6 +90,7 @@ const Button: FC<ButtonProps> = ({
                 height: height,
                 fontSize: textSize,
                 background: themeColors[theme],
+                borderRadius: borderRadius,
                 color: theme === 'light' ? mainColor : whiteColor,
                 border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : 'none',
                 flexDirection: iconPosition === 'left' ? 'row' : 'row-reverse',
