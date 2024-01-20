@@ -123,7 +123,7 @@ const Message: FC<MessageProps> = ({
                                 {
                                     messageText.length === text.length
                                         ? <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
-                                        : 'DAIBL đang tạo câu trả lời ...'
+                                        : `${mode ? 'DAIBL' : 'GPT'} đang tạo câu trả lời ...`
                                 }
                             </>
                         )}
