@@ -8,7 +8,8 @@ import {
     greenGradientColor,
     yellowGradientColor,
     mainColor,
-    getColorLevel
+    getColorLevel,
+    greenColor
 }
     from '@/components/variables'
 
@@ -17,11 +18,12 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     height?: number | string
     label?: string
     textSize?: number | string
+    textWeight?: number
     iconSize?: number | string
     icon?: ReactNode | ReactElement
     className?: string
     borderRadius?: number | string
-    theme?: 'default' | 'light' | 'dark' | 'danger' | 'warning' | 'success'
+    theme?: 'default' | 'light' | 'dark' | 'danger' | 'warning' | 'success' | 'gpt'
     iconPosition?: 'left' | 'right'
     onClick?: () => void
 }
@@ -37,6 +39,7 @@ const Button: FC<ButtonProps> = ({
     borderRadius = '8px',
     theme = 'default',
     iconPosition = 'left',
+    textWeight = 500,
     onClick,
     ...rest
 }) => {
@@ -48,6 +51,7 @@ const Button: FC<ButtonProps> = ({
         danger: redGradientColor,
         warning: yellowGradientColor,
         success: greenGradientColor,
+        gpt: whiteColor,
     }
 
     const [bubblePosition, setBubblePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
@@ -89,10 +93,11 @@ const Button: FC<ButtonProps> = ({
                 width: width,
                 height: height,
                 fontSize: textSize,
+                fontWeight: textWeight,
                 background: themeColors[theme],
                 borderRadius: borderRadius,
-                color: theme === 'light' ? mainColor : whiteColor,
-                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : 'none',
+                color: theme === 'light' ? mainColor : theme === 'gpt' ? greenColor : whiteColor,
+                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : theme === 'gpt' ? `1px solid ${getColorLevel(greenColor, 20)}`  : 'none',
                 flexDirection: iconPosition === 'left' ? 'row' : 'row-reverse',
             }}
             {...rest}
@@ -114,7 +119,7 @@ const Button: FC<ButtonProps> = ({
                     style={{
                         top: bubblePosition.y,
                         left: bubblePosition.x,
-                        background: theme === 'light' ? getColorLevel(mainColor, 15) : getColorLevel(whiteColor, 25)
+                        background: theme === 'light' || theme === 'gpt' ? getColorLevel(mainColor, 15) : getColorLevel(whiteColor, 25)
                     }}
                 >
                 </span>

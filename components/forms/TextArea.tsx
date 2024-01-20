@@ -2,6 +2,7 @@
 import { FC, ReactElement, ReactNode, TextareaHTMLAttributes, memo, useState } from 'react'
 import { IoAlertCircleOutline } from 'react-icons/io5'
 import styles from '@/components/forms/textarea.module.sass'
+import { getColorLevel, mainColor } from '@/components/variables'
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   width?: number | string
@@ -18,6 +19,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorMessage?: string
   className?: string
   borderRadius?: number
+  border?: string
 }
 
 const TextArea: FC<TextAreaProps> = ({
@@ -35,6 +37,7 @@ const TextArea: FC<TextAreaProps> = ({
   errorMessage,
   className,
   borderRadius = 8,
+  border = `border: 1px solid ${getColorLevel(mainColor, 20)}`,
   ...rest
 }) => {
 
@@ -60,6 +63,7 @@ const TextArea: FC<TextAreaProps> = ({
             height: inputHeight,
             borderRadius: borderRadius,
             padding: padding,
+            border: border,
           }}
           {...rest}
         />

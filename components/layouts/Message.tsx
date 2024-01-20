@@ -8,7 +8,9 @@ import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
 import parse from 'html-react-parser'
-import Button from '../forms/Button'
+import Button from '@/components/forms/Button'
+import { useModeContext } from '@/providers/ModeProvider'
+import { getColorLevel, greenColor, mainColor } from '@/components/variables'
 
 interface MessageProps {
     id: string
@@ -23,6 +25,8 @@ const Message: FC<MessageProps> = ({
     isResult = false,
     isComplete = false,
 }) => {
+
+    const { mode } = useModeContext()
 
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
@@ -93,22 +97,27 @@ const Message: FC<MessageProps> = ({
                                     iconSize={18}
                                     width={28}
                                     height={28}
-                                    theme='light'
+                                    theme={mode ? 'light' : 'gpt'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('result')}
                                 />
                             </a>
                         )
                     }
-                    <span>
+                    <span
+                        style={{
+                            border: `1px solid ${getColorLevel(mode ? mainColor : greenColor, 5)}`,
+                            background: `${getColorLevel(mode ? mainColor : greenColor, 5)}`
+                        }}
+                    >
                         <Image
-                            src={'/images/common/logo.png'}
+                            src={mode ? '/images/common/logo.png' : '/images/common/gpt-logo.png'}
                             alt='DaiBL Logo'
                             width={25}
                             height={25}
                         />
                         {isComplete ? (
-                            <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
+                            <>Đã trả lời xong <IoCheckmarkCircleOutline style={{ color: mode ? mainColor : greenColor }} /></>
                         ) : (
                             <>
                                 {
@@ -139,14 +148,19 @@ const Message: FC<MessageProps> = ({
                                     iconSize={18}
                                     width={28}
                                     height={28}
-                                    theme='light'
+                                    theme={mode ? 'light' : 'gpt'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('comment')}
                                 />
                             </a>
                         )
                     }
-                    <span>
+                    <span
+                        style={{
+                            border: `1px solid ${getColorLevel(mode ? mainColor : greenColor, 5)}`,
+                            background: `${getColorLevel(mode ? mainColor : greenColor, 5)}`
+                        }}
+                    >
                         <Image
                             src={'/images/common/avatar.png'}
                             alt='DaiBL Logo'

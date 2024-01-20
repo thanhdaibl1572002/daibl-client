@@ -11,7 +11,7 @@ const MessageContext = createContext<MessageContextType>({
     setIsMessageComplete: () => { },
 })
 const MessageProvider = ({ children }: { children: ReactNode | ReactElement }) => {
-    const [isMessageComplete, setIsMessageComplete] = useState(true)
+    const [isMessageComplete, setIsMessageComplete] = useState<boolean>(true)
     return (
         <MessageContext.Provider value={{ isMessageComplete, setIsMessageComplete }}>
             {children}

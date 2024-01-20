@@ -1,5 +1,5 @@
 'use client'
-import { FC, useCallback, useMemo, useState } from 'react'
+import { FC, memo, useState } from 'react'
 import styles from '@/components/layouts/sendmessage.module.sass'
 import TextArea from '@/components/forms/TextArea'
 import Button from '@/components/forms/Button'
@@ -9,12 +9,12 @@ import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import axios from 'axios'
 import { useMessageContext } from '@/providers/MessageProvider'
+import { getColorLevel, greenColor, mainColor } from '@/components/variables'
+import { useModeContext } from '@/providers/ModeProvider'
 
-interface SendMessageProps {
+const SendMessage: FC = () => {
 
-}
-
-const SendMessage: FC<SendMessageProps> = ({ }) => {
+    const { mode } = useModeContext()
 
     const [text, setText] = useState<string>('')
 
@@ -73,6 +73,7 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                     inputWidth={'100%'}
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
+                    border={`1px solid ${mode ? getColorLevel(mainColor, 20) : getColorLevel(greenColor, 20)}`}
                     placeholder='Viết bình luận tại đây'
                     value={text}
                     onChange={event => setText(event.target.value)}
@@ -81,6 +82,12 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                             event.preventDefault()
                             handleSendMessage()
                         }
+                    }}
+                    onFocus={event => {
+                        event.currentTarget.style.border = `1px solid ${mode ? getColorLevel(mainColor, 80) : getColorLevel(greenColor, 80)}`
+                    }}
+                    onBlur={event => {
+                        event.currentTarget.style.border = `1px solid ${mode ? getColorLevel(mainColor, 20) : getColorLevel(greenColor, 20)}`
                     }}
                 />
                 <div className={styles._send}>
@@ -92,6 +99,7 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                         height={40}
                         onClick={handleSendMessage}
                         disabled={!isMessageComplete || text.trim().length === 0}
+                        theme={mode ? 'default' : 'success'}
                     />
                 </div>
             </div>
@@ -99,4 +107,4 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
     )
 }
 
-export default SendMessage
+export default memo(SendMessage)
