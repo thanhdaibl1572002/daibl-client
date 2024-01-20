@@ -3,7 +3,7 @@ import { FC, useEffect, useState } from 'react'
 import styles from './page.module.sass'
 import Logo from '@/components/common/Logo'
 import ChatBox from '@/components/layouts/ChatBox'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
 
@@ -39,7 +39,6 @@ const Home: FC = ({ }) => {
 
   return (
     <main className={styles._container}>
-      <button onClick={() => signOut()}>Sign Out</button>
       <ChatBox />
     </main>
   )
