@@ -69,9 +69,9 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
             <div className={styles._form}>
                 <TextArea
                     width={'100%'}
-                    height={60}
+                    height={50}
                     inputWidth={'100%'}
-                    inputHeight={60}
+                    inputHeight={50}
                     placeholder='Viết bình luận tại đây'
                     value={text}
                     onChange={event => setText(event.target.value)}

@@ -7,6 +7,7 @@ import IMessage from '@/interfaces/message'
 import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
+import parse from 'html-react-parser'
 
 interface MessageProps {
     id: string
@@ -93,7 +94,7 @@ const Message: FC<MessageProps> = ({
                             </>
                         )}
                     </span>
-                    {isComplete ? text : messageText}
+                    <span className={styles._result}>{parse(isComplete ? text : messageText)}</span>
                 </p>
             ) : (
                 <p className={styles._comment}>

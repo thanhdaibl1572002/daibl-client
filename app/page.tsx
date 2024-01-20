@@ -24,11 +24,16 @@ const Home: FC = ({ }) => {
             isComplete: false,
             isResult: true,
             text: `
-              Xin chào ${session.user.name}! Tôi tên DAIBL, tôi là một mô hình máy học được phát triển bởi
-              😍 Trương Thành Đại - 3120410105 😍, có thể phân loại bình luận dựa trên cảm xúc
+              Xin chào ${session.user.name}! Tôi tên <strong>DAIBL</strong>, 
+              một mô hình máy học được phát triển bởi
+              😍 <a href="https://s.net.vn/0v2d" target="_blank">
+              Trương Thành Đại BL</a> 😍, có thể phân loại bình luận dựa trên cảm xúc
               dành riêng cho ngôn ngữ tiếng Việt. Tôi được huấn luyện bằng phương pháp phân loại
-              văn bản Naive Bayes. Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, trung lập
-              và tiêu cực của bình luận được nhập vào.
+              Naive Bayes với bộ dữ liệu <a href="https://s.net.vn/2ciF"
+              target="_blank">Synthetic Vietnamese Students’ Feedback Corpus (Kaggle)</a>.
+              <br/>
+              Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, trung lập
+              và tiêu cực của các bình luận về chủ đề trường học và sinh viên.
               `
           })
         }
@@ -45,11 +50,3 @@ const Home: FC = ({ }) => {
 }
 
 export default Home
-
-
-{/* <TextArea />
-<header>
-  <Logo />
-</header>
-<ChatBox />
-<button onClick={() => signOut()}>Đăng xuất</button> */}
