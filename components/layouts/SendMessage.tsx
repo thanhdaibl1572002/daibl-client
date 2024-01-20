@@ -1,5 +1,5 @@
 'use client'
-import { FC, useState } from 'react'
+import { FC, useCallback, useMemo, useState } from 'react'
 import styles from '@/components/layouts/sendmessage.module.sass'
 import TextArea from '@/components/forms/TextArea'
 import Button from '@/components/forms/Button'
@@ -8,6 +8,7 @@ import IMessage from '@/interfaces/message'
 import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import axios from 'axios'
+import { useMessageContext } from '@/providers/MessageProvider'
 
 interface SendMessageProps {
 
@@ -15,9 +16,9 @@ interface SendMessageProps {
 
 const SendMessage: FC<SendMessageProps> = ({ }) => {
 
-    const userId = localStorage.getItem('DAIBL_userId')
-
     const [text, setText] = useState<string>('')
+
+    const { isMessageComplete, setIsMessageComplete } = useMessageContext()
 
     const handleSendMessage = async () => {
         if (text.trim()) {
@@ -28,13 +29,37 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                 isComplete: true,
                 isResult: false,
             }
-            // set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
-            setText('')
-            try {
-                const response = await axios.post('https://thanhdaibl.pythonanywhere.com')
-                console.log(response.data)
-            } catch (error) {
-                console.error('Error sending POST request:', error)
+            const userId = localStorage.getItem('DAIBL_userId')
+            if (userId) {
+                setText('')
+                set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
+                setIsMessageComplete(true)
+                try {
+                    const response = await axios.post('https://flask-test-9896.onrender.com/predict', { message: newMessage.text })
+                    if (response.data) {
+                        const resultMessage: IMessage = {
+                            id: Date.now().toString(),
+                            text: '',
+                            isComplete: false,
+                            isResult: true,
+                        }
+                        if (response.data === -2) {
+                            resultMessage.text = `
+                            Bình luận "${newMessage.text}" của bạn có vẻ không phải là tiếng Việt. Điều này có thể ảnh hưởng đến độ chính
+                            xác của dự đoán, vui lòng nhập lại bình luận khác bằng tiếng Việt. 
+                            `
+                        } else if (response.data === -1) {
+                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc tiêu cực.`
+                        } else if (response.data === 0) {
+                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc trung lập.`
+                        } else if (response.data === 1) {
+                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc tích cực.`
+                        }
+                        set(ref(db, `/data/${userId}/messages/${resultMessage.id}`), resultMessage)
+                    }
+                } catch (error) {
+                    console.error('Error sending POST request:', error)
+                }
             }
         }
     }
@@ -50,6 +75,12 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                     placeholder='Viết bình luận tại đây'
                     value={text}
                     onChange={event => setText(event.target.value)}
+                    onKeyDown={event => {
+                        if (event.key === 'Enter' && isMessageComplete && text.trim()) {
+                            event.preventDefault()
+                            handleSendMessage()
+                        }
+                    }}
                 />
                 <div className={styles._send}>
                     <Button
@@ -59,7 +90,7 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                         width={40}
                         height={40}
                         onClick={handleSendMessage}
-                        disabled={text.trim() ? false : true}
+                        disabled={!isMessageComplete || text.trim().length === 0}
                     />
                 </div>
             </div>

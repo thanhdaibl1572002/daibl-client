@@ -3,6 +3,7 @@ import './globals.sass'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import AuthProvider from '@/providers/AuthProvider'
+import MessageProvider from '@/providers/MessageProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,7 +21,9 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
     <html lang="en">
       <body className={inter.className}>
         <AuthProvider>
-          {children}
+          <MessageProvider>
+            {children}
+          </MessageProvider>
         </AuthProvider>
       </body>
     </html>

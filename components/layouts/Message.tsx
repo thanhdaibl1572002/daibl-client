@@ -4,8 +4,9 @@ import styles from '@/components/layouts/message.module.sass'
 import Image from 'next/image'
 import { IoCheckmarkCircleOutline } from 'react-icons/io5'
 import IMessage from '@/interfaces/message'
-import {ref, set } from 'firebase/database'
+import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
+import { useMessageContext } from '@/providers/MessageProvider'
 
 interface MessageProps {
     id: string
@@ -24,32 +25,47 @@ const Message: FC<MessageProps> = ({
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
 
-    const userId = localStorage.getItem('DAIBL_userId')
+    useEffect(() => {
+        if (isComplete) {
+            setIsMessageComplete(true)
+        } else {
+            setIsMessageComplete(false)
+        }
+    }, [])
+
+    const { setIsMessageComplete, isMessageComplete } = useMessageContext()
 
     useEffect(() => {
-        let index = 0
-        const textInterval = setInterval(() => {
-            setMessageText(text.slice(0, index))
-            index++
-            if (index > text.length)
-                clearInterval(textInterval)
-            else if (messageRef.current && isResult && !isComplete)
-                messageRef.current.scrollIntoView({ behavior: "smooth", block: "end" })
-        }, 30)
-        return () => clearInterval(textInterval)
+        if (isResult && !isComplete) {
+            let index = 0
+            const textInterval = setInterval(() => {
+                setMessageText(text.slice(0, index))
+                index++
+                if (index > text.length) {
+                    clearInterval(textInterval)
+                } else if (messageRef.current && !isComplete) {
+                    let parentElement = messageRef.current!.parentNode
+                    parentElement!.scrollTop = parentElement!.scrollHeight
+                }
+            }, 30)
+            return () => clearInterval(textInterval)
+        }
     }, [id, text, isResult, isComplete])
 
     useEffect(() => {
         if (messageText.length === text.length && isResult && !isComplete) {
             const newMessage: IMessage = {
-                id: id, 
-                text: text, 
+                id: id,
+                text: text,
                 isComplete: true,
-                isResult: true, 
+                isResult: true,
             }
-            set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
+            const userId = localStorage.getItem('DAIBL_userId')
+            if (userId)
+                set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
+                setIsMessageComplete(true)
         }
-    }, [messageText, id, text, isResult, isComplete, userId])
+    }, [messageText, id, text, isResult, isComplete, setIsMessageComplete])
 
     return (
         <div
@@ -66,14 +82,14 @@ const Message: FC<MessageProps> = ({
                             height={25}
                         />
                         {isComplete ? (
-                            <>Đã trả lời xong <IoCheckmarkCircleOutline /></> 
+                            <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
                         ) : (
                             <>
-                            {
-                                messageText.length === text.length 
-                                ? <>Đã trả lời xong <IoCheckmarkCircleOutline /></> 
-                                : 'DAIBL đang tạo câu trả lời ...'
-                            }
+                                {
+                                    messageText.length === text.length
+                                        ? <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
+                                        : 'DAIBL đang tạo câu trả lời ...'
+                                }
                             </>
                         )}
                     </span>
