@@ -74,7 +74,7 @@ const SendMessage: FC = () => {
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
                     border={`1px solid ${mode ? getColorLevel(mainColor, 20) : getColorLevel(greenColor, 20)}`}
-                    placeholder='Viết bình luận tại đây'
+                    placeholder={mode ? 'Viết bình luận tại đây' : 'Hỏi bất cứ điều gì'}
                     value={text}
                     onChange={event => setText(event.target.value)}
                     onKeyDown={event => {
