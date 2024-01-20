@@ -23,7 +23,7 @@ const Home: FC = ({ }) => {
             isComplete: false,
             isResult: true,
             text: `
-              Xin chào ${session.user.name}! Tôi tên <strong>DAIBL</strong>, 
+              Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
               một mô hình máy học được phát triển bởi
               😍 <a href="https://s.net.vn/0v2d" target="_blank">
               Trương Thành Đại BL</a> 😍, có thể phân loại bình luận dựa trên cảm xúc
