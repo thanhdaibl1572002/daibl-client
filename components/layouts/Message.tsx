@@ -33,7 +33,7 @@ const Message: FC<MessageProps> = ({
         }
     }, [])
 
-    const { setIsMessageComplete, isMessageComplete } = useMessageContext()
+    const { setIsMessageComplete } = useMessageContext()
 
     useEffect(() => {
         if (isResult && !isComplete) {
@@ -44,7 +44,7 @@ const Message: FC<MessageProps> = ({
                 if (index > text.length) {
                     clearInterval(textInterval)
                 } else if (messageRef.current && !isComplete) {
-                    let parentElement = messageRef.current!.parentNode
+                    let parentElement = messageRef.current!.parentNode as Element
                     parentElement!.scrollTop = parentElement!.scrollHeight
                 }
             }, 30)
