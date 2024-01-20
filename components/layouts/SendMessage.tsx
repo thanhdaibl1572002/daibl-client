@@ -72,6 +72,7 @@ const SendMessage: FC<SendMessageProps> = ({ }) => {
                     height={50}
                     inputWidth={'100%'}
                     inputHeight={50}
+                    padding='10px 55px 10px 12px'
                     placeholder='Viết bình luận tại đây'
                     value={text}
                     onChange={event => setText(event.target.value)}

@@ -1,7 +1,6 @@
 'use client'
 import { FC, useEffect, useState } from 'react'
 import styles from './page.module.sass'
-import Logo from '@/components/common/Logo'
 import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'

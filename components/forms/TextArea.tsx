@@ -8,6 +8,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   height?: number | string
   inputWidth?: number | string
   inputHeight?: number | string
+  padding?: string
   label?: string
   labelIcon?: ReactNode | ReactElement
   id?: string
@@ -24,6 +25,7 @@ const TextArea: FC<TextAreaProps> = ({
   height = 'fit-content',
   inputWidth = '100%',
   inputHeight = 100,
+  padding = '15px',
   label,
   labelIcon,
   id,
@@ -57,6 +59,7 @@ const TextArea: FC<TextAreaProps> = ({
             width: inputWidth,
             height: inputHeight,
             borderRadius: borderRadius,
+            padding: padding,
           }}
           {...rest}
         />
