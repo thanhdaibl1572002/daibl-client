@@ -39,7 +39,7 @@ const Home: FC = ({ }) => {
 
   return (
     <main className={styles._container}>
-      {/* <button onClick={() => signOut()}>Sign Out</button> */}
+      <button onClick={() => signOut()}>Sign Out</button>
       <ChatBox />
     </main>
   )
