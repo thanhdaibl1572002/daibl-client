@@ -17,23 +17,25 @@ const ChatBox: FC = () => {
 
   const { mode, setMode } = useModeContext()
 
-  const [data, setData] = useState({})
+  const [dataDAIBL, setDataDAIBL] = useState({})
 
   useEffect(() => {
     const userId = localStorage.getItem('DAIBL_userId')
     if (userId) {
       const unsubscribe = onValue(ref(db, `/data/${userId}/messages`), (snapshot) => {
         const newData = snapshot.val()
-        setData(newData)
+        setDataDAIBL(newData)
       })
       return () => unsubscribe()
     }
   }, [])
 
+  
+
   const messagesRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
     messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
-  }, [data])
+  }, [dataDAIBL])
 
   return (
     <div
@@ -51,7 +53,7 @@ const ChatBox: FC = () => {
           textColor={mode ? mainColor : greenColor}
           imageSrc={`/images/common/${mode ? 'logo' : 'gpt-logo'}.png`}
         />
-        <div className={styles._modes}>
+        {/* <div className={styles._modes}>
           <Button
             label={mode ? 'DAIBL 1.0' : 'GPT 3.5'}
             icon={<IoSwapHorizontalOutline />}
@@ -64,7 +66,7 @@ const ChatBox: FC = () => {
             theme={mode ? 'default' : 'success'}
             borderRadius={6}
           />
-        </div>
+        </div> */}
         <Button
           label=''
           icon={<IoLogOutOutline />}
@@ -83,8 +85,8 @@ const ChatBox: FC = () => {
         {mode ? (
           <>
             {
-              data && Object.entries(data) && Object.entries(data).length > 0 && (
-                Object.entries(data).map(([key, value]) => {
+              dataDAIBL && Object.entries(dataDAIBL) && Object.entries(dataDAIBL).length > 0 && (
+                Object.entries(dataDAIBL).map(([key, value]) => {
                   const message = value as IMessage
                   return (
                     <Message
@@ -101,7 +103,7 @@ const ChatBox: FC = () => {
           </>
         ) : (
           <>
-            {
+            {/* {
               data && Object.entries(data) && Object.entries(data).length > 0 && (
                 Object.entries(data).map(([key, value]) => {
                   const message = value as IMessage
@@ -116,7 +118,7 @@ const ChatBox: FC = () => {
                   )
                 })
               )
-            }
+            } */}
           </>
         )}
       </div>

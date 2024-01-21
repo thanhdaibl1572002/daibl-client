@@ -1,5 +1,5 @@
 'use client'
-import { FC, MouseEvent, memo, useEffect, useRef, useState } from 'react'
+import { FC, memo, useEffect, useRef, useState } from 'react'
 import styles from '@/components/layouts/message.module.sass'
 import Image from 'next/image'
 import { IoCheckmarkCircleOutline, IoCopyOutline } from 'react-icons/io5'
@@ -37,7 +37,6 @@ const Message: FC<MessageProps> = ({
         const content = type === 'result' ? textResultRef.current!.textContent : textCommentRef.current!.textContent
         content && navigator.clipboard.writeText(content.replace(/\s+/g, ' ').trim())
     }
-
 
     useEffect(() => {
         if (isComplete) {
