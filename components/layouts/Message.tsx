@@ -94,9 +94,9 @@ const Message: FC<MessageProps> = ({
                                 <Button
                                     label=''
                                     icon={<IoCopyOutline />}
-                                    iconSize={18}
-                                    width={28}
-                                    height={28}
+                                    iconSize={22}
+                                    width={32}
+                                    height={32}
                                     theme={mode ? 'light' : 'gpt'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('result')}
@@ -145,9 +145,9 @@ const Message: FC<MessageProps> = ({
                                 <Button
                                     label=''
                                     icon={<IoCopyOutline />}
-                                    iconSize={18}
-                                    width={28}
-                                    height={28}
+                                    iconSize={22}
+                                    width={32}
+                                    height={32}
                                     theme={mode ? 'light' : 'gpt'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('comment')}
