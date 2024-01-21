@@ -46,10 +46,10 @@ const ChatBox: FC = () => {
     >
       <div className={styles._tools}>
         <Logo
-          imageWidth={45}
-          imageHeight={45}
+          imageWidth={40}
+          imageHeight={40}
           logoText={mode ? 'DAIBL' : 'GPT'}
-          textSize={12}
+          textSize={10.5}
           textColor={mode ? mainColor : greenColor}
           imageSrc={`/images/common/${mode ? 'logo' : 'gpt-logo'}.png`}
         />
@@ -70,9 +70,9 @@ const ChatBox: FC = () => {
         <Button
           label=''
           icon={<IoLogOutOutline />}
-          iconSize={23}
-          width={40}
-          height={40}
+          iconSize={22}
+          width={38}
+          height={38}
           onClick={signOut}
           theme={mode ? 'light' : 'gpt'}
           borderRadius={6}
