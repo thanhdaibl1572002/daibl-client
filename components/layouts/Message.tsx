@@ -56,7 +56,7 @@ const Message: FC<MessageProps> = ({
                 } 
                 else if (messageRef.current && !isComplete) {
                     let parentElement = messageRef.current!.parentNode as Element
-                    const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight
+                    const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight - 1
                     if (isAtBottom) {
                         requestAnimationFrame(() => {
                             parentElement!.scrollTop = parentElement!.scrollHeight
