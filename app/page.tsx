@@ -12,7 +12,6 @@ const Home: FC = ({ }) => {
 
   useEffect(() => {
     if (session && session.user.id !== authId) {
-      window.location.reload()
       setAuthId(session.user.id)
       localStorage.setItem('DAIBL_userId', session.user.id)
       const messageId = Date.now().toString()
