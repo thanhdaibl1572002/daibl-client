@@ -5,6 +5,9 @@ import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
+import { Inter } from 'next/font/google'
+
+const inter = Inter({ subsets: ['latin'] })
 
 const Home: FC = ({ }) => {
   const { data: session } = useSession({ required: true })
@@ -42,7 +45,7 @@ const Home: FC = ({ }) => {
 
 
   return (
-    <main className={styles._container}>
+    <main className={`${styles._container} ${inter.className}`}>
       <ChatBox />
     </main>
   )
