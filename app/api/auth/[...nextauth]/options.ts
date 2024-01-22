@@ -13,7 +13,6 @@ export const options: NextAuthOptions = {
         session: (params) => {
             const { session, token } = params
             session.user.id = token.sub
-            window.location.reload()
             return session
         },
     },
