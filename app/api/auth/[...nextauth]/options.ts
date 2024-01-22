@@ -12,7 +12,8 @@ export const options: NextAuthOptions = {
     callbacks: {
         session: (params) => {
             const { session, token } = params
-                session.user.id = token.sub
+            session.user.id = token.sub
+            window.location.reload()
             return session
         },
     },
