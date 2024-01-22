@@ -63,7 +63,7 @@ const Message: FC<MessageProps> = ({
                         })
                     }
                 }
-            }, 100)
+            }, 30)
             return () => clearInterval(textInterval)
         }
     }, [id, text, isResult, isComplete])
