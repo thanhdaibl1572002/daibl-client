@@ -4,7 +4,6 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import AuthProvider from '@/providers/AuthProvider'
 import MessageProvider from '@/providers/MessageProvider'
-import ModeProvider from '@/providers/ModeProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,9 +22,7 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
       <body className={inter.className}>
         <AuthProvider>
           <MessageProvider>
-            <ModeProvider>
-              {children}
-            </ModeProvider>
+            {children}
           </MessageProvider>
         </AuthProvider>
       </body>

@@ -9,7 +9,6 @@ import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
 import parse from 'html-react-parser'
 import Button from '@/components/forms/Button'
-import { useModeContext } from '@/providers/ModeProvider'
 import { getColorLevel, greenColor, mainColor } from '@/components/variables'
 
 interface MessageProps {
@@ -25,8 +24,6 @@ const Message: FC<MessageProps> = ({
     isResult = false,
     isComplete = false,
 }) => {
-
-    const { mode } = useModeContext()
 
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
@@ -56,11 +53,17 @@ const Message: FC<MessageProps> = ({
                 index++
                 if (index > text.length) {
                     clearInterval(textInterval)
-                } else if (messageRef.current && !isComplete) {
+                } 
+                else if (messageRef.current && !isComplete) {
                     let parentElement = messageRef.current!.parentNode as Element
-                    parentElement!.scrollTop = parentElement!.scrollHeight
+                    const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight
+                    if (isAtBottom) {
+                        requestAnimationFrame(() => {
+                            parentElement!.scrollTop = parentElement!.scrollHeight
+                        })
+                    }
                 }
-            }, 30)
+            }, 100)
             return () => clearInterval(textInterval)
         }
     }, [id, text, isResult, isComplete])
@@ -96,7 +99,7 @@ const Message: FC<MessageProps> = ({
                                     iconSize={22}
                                     width={32}
                                     height={32}
-                                    theme={mode ? 'light' : 'gpt'}
+                                    theme={'light'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('result')}
                                 />
@@ -105,24 +108,24 @@ const Message: FC<MessageProps> = ({
                     }
                     <span
                         style={{
-                            border: `1px solid ${getColorLevel(mode ? mainColor : greenColor, 5)}`,
-                            background: `${getColorLevel(mode ? mainColor : greenColor, 5)}`
+                            border: `1px solid ${getColorLevel(mainColor, 5)}`,
+                            background: `${getColorLevel(mainColor, 5)}`
                         }}
                     >
                         <Image
-                            src={mode ? '/images/common/logo.png' : '/images/common/gpt-logo.png'}
+                            src={'/images/common/logo.png'}
                             alt='DaiBL Logo'
                             width={25}
                             height={25}
                         />
                         {isComplete ? (
-                            <>Đã trả lời xong <IoCheckmarkCircleOutline style={{ color: mode ? mainColor : greenColor }} /></>
+                            <>Đã trả lời xong <IoCheckmarkCircleOutline style={{ color: mainColor }} /></>
                         ) : (
                             <>
                                 {
                                     messageText.length === text.length
                                         ? <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
-                                        : `${mode ? 'DAIBL' : 'GPT'} đang tạo câu trả lời ...`
+                                        : `DAIBL đang tạo câu trả lời ...`
                                 }
                             </>
                         )}
@@ -147,7 +150,7 @@ const Message: FC<MessageProps> = ({
                                     iconSize={22}
                                     width={32}
                                     height={32}
-                                    theme={mode ? 'light' : 'gpt'}
+                                    theme={'light'}
                                     borderRadius={5}
                                     onClick={() => copyToClipboard('comment')}
                                 />
@@ -156,8 +159,8 @@ const Message: FC<MessageProps> = ({
                     }
                     <span
                         style={{
-                            border: `1px solid ${getColorLevel(mode ? mainColor : greenColor, 5)}`,
-                            background: `${getColorLevel(mode ? mainColor : greenColor, 5)}`
+                            border: `1px solid ${getColorLevel(mainColor, 5)}`,
+                            background: `${getColorLevel(mainColor, 5)}`
                         }}
                     >
                         <Image

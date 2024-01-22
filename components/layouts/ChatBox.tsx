@@ -1,72 +1,86 @@
 'use client'
-import { FC, memo, useEffect, useMemo, useRef, useState } from 'react'
+import { FC, memo, UIEvent, useEffect, useMemo, useRef, useState, WheelEvent } from 'react'
 import styles from '@/components/layouts/chatbox.module.sass'
 import Message from '@/components/layouts/Message'
 import SendMessage from '@/components/layouts/SendMessage'
 import IMessage from '@/interfaces/message'
-import { ref, onValue } from 'firebase/database'
+import { ref, query, onValue, limitToLast } from 'firebase/database'
 import db from '@/firebase/db'
 import Logo from '../common/Logo'
 import Button from '../forms/Button'
 import { signOut } from 'next-auth/react'
-import { IoLogOutOutline, IoSwapHorizontalOutline } from 'react-icons/io5'
-import { useModeContext } from '@/providers/ModeProvider'
-import { getColorLevel, mainColor, greenColor } from '@/components/variables'
+import { IoArrowDownOutline, IoLogOutOutline } from 'react-icons/io5'
+import { getColorLevel, mainColor } from '@/components/variables'
+import LoadMore from '../common/LoadMore'
+import { useMessageContext } from '@/providers/MessageProvider'
 
 const ChatBox: FC = () => {
 
-  const { mode, setMode } = useModeContext()
-
   const [dataDAIBL, setDataDAIBL] = useState({})
+  const [limit, setLimit] = useState(10)
+  const [loadMore, setLoadMore] = useState(false)
+  const [isGenerating, setIsGenerating] = useState(false)
+  const [isScrollEnd, setIsScrollEnd] = useState(false)
+
+  const messagesRef = useRef<HTMLDivElement>(null)
+
+  const { isMessageComplete } = useMessageContext()
 
   useEffect(() => {
     const userId = localStorage.getItem('DAIBL_userId')
     if (userId) {
-      const unsubscribe = onValue(ref(db, `/data/${userId}/messages`), (snapshot) => {
+      const messagesQuery = query(ref(db, `/data/${userId}/messages`), limitToLast(limit))
+      const unsubscribe = onValue(messagesQuery, (snapshot) => {
+
+        const currentScrollTop = messagesRef.current!.scrollTop
+        const currentScrollHeight = messagesRef.current!.scrollHeight
+
         const newData = snapshot.val()
-        setDataDAIBL(newData)
+        setTimeout(() => {
+          setDataDAIBL(newData)
+          setLoadMore(false)
+
+          requestAnimationFrame(() => {
+            const newScrollTop = currentScrollTop + (messagesRef.current!.scrollHeight - currentScrollHeight)
+            messagesRef.current!.scrollTop = newScrollTop
+          })
+        }, 500)
       })
       return () => unsubscribe()
     }
-  }, [])
+  }, [limit])
 
-  
+  const handleScroll = (event: UIEvent<HTMLDivElement>) => {
+    const isAtTop = event.currentTarget.scrollTop === 0
+    const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight - 50
+    const isDataExhausted = Object.entries(dataDAIBL).length < limit
+    isAtTop && !isDataExhausted && (setLimit(prevLimit => prevLimit + 10), setLoadMore(true))
+    isMessageComplete ? setIsGenerating(false) : (isAtBottom ? setIsGenerating(false) : setIsGenerating(true))
+    isAtBottom ? setIsScrollEnd(false) : setIsScrollEnd(true)
+  }
 
-  const messagesRef = useRef<HTMLDivElement>(null)
   useEffect(() => {
-    messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
-  }, [dataDAIBL])
+    if (limit === 10) {
+      messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
+    }
+  }, [dataDAIBL, limit])
 
   return (
     <div
       className={styles._container}
       style={{
-        background: mode ? getColorLevel(mainColor, 3) : getColorLevel(greenColor, 5)
+        background: getColorLevel(mainColor, 3)
       }}
     >
       <div className={styles._tools}>
         <Logo
           imageWidth={40}
           imageHeight={40}
-          logoText={mode ? 'DAIBL' : 'GPT'}
+          logoText={'DAIBL'}
           textSize={10.5}
-          textColor={mode ? mainColor : greenColor}
-          imageSrc={`/images/common/${mode ? 'logo' : 'gpt-logo'}.png`}
+          textColor={mainColor}
+          imageSrc={`/images/common/logo.png`}
         />
-        {/* <div className={styles._modes}>
-          <Button
-            label={mode ? 'DAIBL 1.0' : 'GPT 3.5'}
-            icon={<IoSwapHorizontalOutline />}
-            iconSize={18}
-            width={120}
-            height={40}
-            textSize={16}
-            textWeight={400}
-            onClick={() => setMode(!mode)}
-            theme={mode ? 'default' : 'success'}
-            borderRadius={6}
-          />
-        </div> */}
         <Button
           label=''
           icon={<IoLogOutOutline />}
@@ -74,54 +88,53 @@ const ChatBox: FC = () => {
           width={38}
           height={38}
           onClick={signOut}
-          theme={mode ? 'light' : 'gpt'}
+          theme={'light'}
           borderRadius={6}
         />
       </div>
       <div
         className={styles._messages}
         ref={messagesRef}
+        onScroll={handleScroll}
       >
-        {mode ? (
-          <>
-            {
-              dataDAIBL && Object.entries(dataDAIBL) && Object.entries(dataDAIBL).length > 0 && (
-                Object.entries(dataDAIBL).map(([key, value]) => {
-                  const message = value as IMessage
-                  return (
-                    <Message
-                      key={key}
-                      id={key}
-                      isResult={message.isResult}
-                      isComplete={message.isComplete}
-                      text={message.text}
-                    />
-                  )
-                })
+        {loadMore && <LoadMore />}
+        {
+          dataDAIBL && Object.entries(dataDAIBL) && Object.entries(dataDAIBL).length > 0 && (
+            Object.entries(dataDAIBL).map(([key, value]) => {
+              const message = value as IMessage
+              return (
+                <Message
+                  key={key}
+                  id={key}
+                  isResult={message.isResult}
+                  isComplete={message.isComplete}
+                  text={message.text}
+                />
               )
-            }
-          </>
-        ) : (
-          <>
-            {/* {
-              data && Object.entries(data) && Object.entries(data).length > 0 && (
-                Object.entries(data).map(([key, value]) => {
-                  const message = value as IMessage
-                  return (
-                    <Message
-                      key={key}
-                      id={key}
-                      isResult={message.isResult}
-                      isComplete={message.isComplete}
-                      text={message.text}
-                    />
-                  )
-                })
-              )
-            } */}
-          </>
-        )}
+            })
+          )
+        }
       </div>
+      {isGenerating && (
+        <div className={styles._generating}>
+          Đang trả lời
+          <span></span>
+        </div>
+      )}
+      {isScrollEnd && (
+        <div className={styles._scroll__end}>
+        <Button
+          label=''
+          icon={<IoArrowDownOutline />}
+          iconSize={18}
+          width={35}
+          height={35}
+          theme={'light'}
+          borderRadius={'50%'}
+          onClick={() => messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight}
+        />
+      </div>
+      )}
       <SendMessage />
     </div>
   )

@@ -35,6 +35,60 @@
         overflow-y: scroll
         position: relative
 
+    ._generating
+        font-size: 14px
+        text-transform: capitalize
+        font-weight: 500
+        color: $main-color
+        position: absolute
+        bottom: 75px
+        left: 50%
+        transform: translateX(-50%)
+        background: $white-color
+        box-shadow: 0 0 2px 0 get-color-level($black-color, 5)
+        border: 1px solid get-color-level($main-color, 30)
+        padding: 6px 8px
+        border-radius: 5px
+        display: flex
+        align-items: baseline
+        width: 125px
+        column-gap: 2px
+
+        span
+            width: 2.5px
+            height: 2.5px
+            min-width: 2.5px
+            min-height: 2.5px
+            border-radius: 50%
+            display: block
+            margin: 5px auto
+            position: relative
+            background: get-color-level($main-color, 20)
+            box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 get-color-level($main-color, 20)
+            animation: shadowPulse 1s linear infinite
+
+            @keyframes shadowPulse
+                33%
+                    background: get-color-level($main-color, 20)
+                    box-shadow: -8px 0 $main-color, 8px 0 get-color-level($main-color, 20)
+                66%
+                    background: $main-color
+                    box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 get-color-level($main-color, 20)
+                100%
+                    background: get-color-level($main-color, 20)
+                    box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 $main-color
+
+    ._scroll__end
+        position: fixed
+        bottom: 50%
+        right: calc( 50% - 390px )
+        transform: translateY(-50%)
+        width: fit-content
+        height: fit-content
+
+        @media ( max-width: 750px )
+            right: 20px
+
     @media ( max-width: 750px )
         width: 100%
         

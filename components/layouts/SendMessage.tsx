@@ -10,11 +10,8 @@ import db from '@/firebase/db'
 import axios from 'axios'
 import { useMessageContext } from '@/providers/MessageProvider'
 import { getColorLevel, greenColor, mainColor } from '@/components/variables'
-import { useModeContext } from '@/providers/ModeProvider'
 
 const SendMessage: FC = () => {
-
-    const { mode } = useModeContext()
 
     const [text, setText] = useState<string>('')
 
@@ -33,7 +30,7 @@ const SendMessage: FC = () => {
             if (userId) {
                 setText('')
                 set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
-                setIsMessageComplete(true)
+                setIsMessageComplete(false)
                 try {
                     const response = await axios.post('https://flask-test-9896.onrender.com/predict', { message: newMessage.text })
                     if (response.data) {
@@ -57,6 +54,7 @@ const SendMessage: FC = () => {
                         }
                         set(ref(db, `/data/${userId}/messages/${resultMessage.id}`), resultMessage)
                     }
+                    setIsMessageComplete(true)
                 } catch (error) {
                     console.error('Error sending POST request:', error)
                 }
@@ -73,8 +71,8 @@ const SendMessage: FC = () => {
                     inputWidth={'100%'}
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
-                    border={`1px solid ${mode ? getColorLevel(mainColor, 20) : getColorLevel(greenColor, 20)}`}
-                    placeholder={mode ? 'Viết bình luận tại đây' : 'Hỏi bất cứ điều gì'}
+                    border={`1px solid ${getColorLevel(mainColor, 20)}`}
+                    placeholder={'Viết bình luận tại đây'}
                     value={text}
                     onChange={event => setText(event.target.value)}
                     onKeyDown={event => {
@@ -84,10 +82,10 @@ const SendMessage: FC = () => {
                         }
                     }}
                     onFocus={event => {
-                        event.currentTarget.style.border = `1px solid ${mode ? getColorLevel(mainColor, 80) : getColorLevel(greenColor, 80)}`
+                        event.currentTarget.style.border = `1px solid ${getColorLevel(mainColor, 80)}`
                     }}
                     onBlur={event => {
-                        event.currentTarget.style.border = `1px solid ${mode ? getColorLevel(mainColor, 20) : getColorLevel(greenColor, 20)}`
+                        event.currentTarget.style.border = `1px solid ${getColorLevel(mainColor, 20)}`
                     }}
                 />
                 <div className={styles._send}>
@@ -99,7 +97,7 @@ const SendMessage: FC = () => {
                         height={40}
                         onClick={handleSendMessage}
                         disabled={!isMessageComplete || text.trim().length === 0}
-                        theme={mode ? 'default' : 'success'}
+                        theme={'default'}
                     />
                 </div>
             </div>
