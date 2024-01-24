@@ -5,6 +5,7 @@ import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
+import { datasetLink, facebookLink } from '@/app/variables'
 
 const Home: FC = ({ }) => {
   const { data: session } = useSession({ required: true })
@@ -25,12 +26,12 @@ const Home: FC = ({ }) => {
             text: `
               Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
               một mô hình máy học được phát triển bởi
-              😍 <a href="https://s.net.vn/0v2d" target="_blank">
+              😍 <a href="${facebookLink}" target="_blank">
               Trương Thành Đại BL</a> 😍 Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, tiêu cực
-              hoặc trung lặp của các bình luận về chủ đề mua sắm thời trang. 
+              hoặc trung lập của các bình luận về chủ đề mua sắm thời trang. 
               <br/>
               Tôi được huấn luyện bằng phương pháp Support Vector Machines (SVM) 
-              với bộ dữ liệu <a href="https://s.net.vn/3SdS"
+              với bộ dữ liệu <a href="${datasetLink}"
               target="_blank">Vietnamese Sentiment Analyst (Kaggle)</a>.
               `
           })

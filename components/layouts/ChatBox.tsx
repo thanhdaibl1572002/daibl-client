@@ -10,6 +10,7 @@ import Logo from '../common/Logo'
 import Button from '../forms/Button'
 import { signOut } from 'next-auth/react'
 import { IoArrowDownOutline, IoLogOutOutline } from 'react-icons/io5'
+import { SiGooglecolab } from 'react-icons/si'
 import { getColorLevel, mainColor } from '@/components/variables'
 import LoadMore from '../common/LoadMore'
 import { useMessageContext } from '@/providers/MessageProvider'
@@ -80,6 +81,18 @@ const ChatBox: FC = () => {
           textSize={10.5}
           textColor={mainColor}
           imageSrc={`/images/common/logo.png`}
+        />
+        <Button
+          label='Source Code'
+          icon={<SiGooglecolab />}
+          iconSize={24}
+          textSize={15}
+          width={'fit-content'}
+          height={38}
+          onClick={signOut}
+          theme={'light'}
+          borderRadius={6}
+          link={'https://s.net.vn/uhZr'}
         />
         <Button
           label=''

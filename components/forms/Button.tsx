@@ -12,6 +12,7 @@ import {
     greenColor
 }
     from '@/components/variables'
+import Link from 'next/link'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     width?: number | string
@@ -25,6 +26,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     borderRadius?: number | string
     theme?: 'default' | 'light' | 'dark' | 'danger' | 'warning' | 'success' | 'gpt'
     iconPosition?: 'left' | 'right'
+    link?: string
     onClick?: () => void
 }
 
@@ -40,6 +42,7 @@ const Button: FC<ButtonProps> = ({
     theme = 'default',
     iconPosition = 'left',
     textWeight = 500,
+    link,
     onClick,
     ...rest
 }) => {
@@ -73,13 +76,17 @@ const Button: FC<ButtonProps> = ({
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
         event.preventDefault()
-        const buttonRect = event.currentTarget.getBoundingClientRect()
-        setBubblePosition({
-            x: event.clientX - buttonRect.left,
-            y: event.clientY - buttonRect.top,
-        })
-        setBubble(true)
-        onClick && onClick()
+        if (link) {
+            link && window.open(link, "_blank")
+        } else {
+            const buttonRect = event.currentTarget.getBoundingClientRect()
+            setBubblePosition({
+                x: event.clientX - buttonRect.left,
+                y: event.clientY - buttonRect.top,
+            })
+            setBubble(true)
+            onClick && onClick()
+        }
     }
 
     const containerClassName = className ? `${styles._container} ${className}` : styles._container
@@ -97,7 +104,7 @@ const Button: FC<ButtonProps> = ({
                 background: themeColors[theme],
                 borderRadius: borderRadius,
                 color: theme === 'light' ? mainColor : theme === 'gpt' ? greenColor : whiteColor,
-                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : theme === 'gpt' ? `1px solid ${getColorLevel(greenColor, 20)}`  : 'none',
+                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : theme === 'gpt' ? `1px solid ${getColorLevel(greenColor, 20)}` : 'none',
                 flexDirection: iconPosition === 'left' ? 'row' : 'row-reverse',
             }}
             {...rest}
