@@ -10,7 +10,7 @@ import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
 import parse from 'html-react-parser'
 import Button from '@/components/forms/Button'
-import { getColorLevel, greenColor, mainColor } from '@/components/variables'
+import { getColorLevel, mainColor } from '@/components/variables'
 
 interface MessageProps {
     id: string

@@ -60,7 +60,7 @@ const Button: FC<ButtonProps> = ({
     const buttonRef = useRef<HTMLButtonElement>(null)
 
     useEffect(() => {
-        const bubbleTimeout = setTimeout(() => setBubble(false), 500)
+        const bubbleTimeout = setTimeout(() => setBubble(false), 300)
         return () => clearTimeout(bubbleTimeout)
     }, [bubble])
 

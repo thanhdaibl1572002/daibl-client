@@ -1,11 +1,11 @@
 import { FC, ReactElement, ReactNode } from 'react'
 import './globals.sass'
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+// import { Inter } from 'next/font/google'
 import AuthProvider from '@/providers/AuthProvider'
 import MessageProvider from '@/providers/MessageProvider'
 
-const inter = Inter({ subsets: ['latin'] })
+// const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: 'DAIBL',
@@ -19,7 +19,7 @@ interface RootLayoutProps {
 const RootLayout: FC<RootLayoutProps> = ({ children }) => {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <AuthProvider>
           <MessageProvider>
             {children}
