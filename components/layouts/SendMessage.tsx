@@ -9,7 +9,7 @@ import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import axios from 'axios'
 import { useMessageContext } from '@/providers/MessageProvider'
-import { getColorLevel, greenColor, mainColor } from '@/components/variables'
+import { getColorLevel, mainColor } from '@/components/variables'
 
 const SendMessage: FC = () => {
 
@@ -32,7 +32,9 @@ const SendMessage: FC = () => {
                 set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
                 setIsMessageComplete(false)
                 try {
-                    const response = await axios.post('https://flask-test-9896.onrender.com/predict', { message: newMessage.text })
+                    const response = await axios.post('https://daibl-server.onrender.com/predict', { 
+                        comment: newMessage.text 
+                    })
                     if (response.data) {
                         const resultMessage: IMessage = {
                             id: Date.now().toString(),
@@ -40,17 +42,12 @@ const SendMessage: FC = () => {
                             isComplete: false,
                             isResult: true,
                         }
-                        if (response.data === -2) {
-                            resultMessage.text = `
-                            Bình luận "${newMessage.text}" của bạn có vẻ không phải là tiếng Việt. Điều này có thể ảnh hưởng đến độ chính
-                            xác của dự đoán, vui lòng nhập lại bình luận khác bằng tiếng Việt. 
-                            `
-                        } else if (response.data === -1) {
-                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc tiêu cực.`
+                        if (response.data === -1) {
+                            resultMessage.text = generateRandomResponse(newMessage.text, 'tiêu cực')
                         } else if (response.data === 0) {
-                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc trung lập.`
+                            resultMessage.text = generateRandomResponse(newMessage.text, 'trung lập')
                         } else if (response.data === 1) {
-                            resultMessage.text = `Bình luận "${newMessage.text}" của bạn có vẻ mang cảm xúc tích cực.`
+                            resultMessage.text = generateRandomResponse(newMessage.text, 'tích cực')
                         }
                         set(ref(db, `/data/${userId}/messages/${resultMessage.id}`), resultMessage)
                     }

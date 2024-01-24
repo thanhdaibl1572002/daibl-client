@@ -26,13 +26,12 @@ const Home: FC = ({ }) => {
               Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
               một mô hình máy học được phát triển bởi
               😍 <a href="https://s.net.vn/0v2d" target="_blank">
-              Trương Thành Đại BL</a> 😍, có thể phân loại bình luận dựa trên cảm xúc
-              dành riêng cho ngôn ngữ tiếng Việt. Tôi được huấn luyện bằng phương pháp phân loại
-              Naive Bayes với bộ dữ liệu <a href="https://s.net.vn/2ciF"
-              target="_blank">Synthetic Vietnamese Students’ Feedback Corpus (Kaggle)</a>.
+              Trương Thành Đại BL</a> 😍 Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, tiêu cực
+              hoặc trung lặp của các bình luận về chủ đề mua sắm thời trang. 
               <br/>
-              Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, trung lập
-              và tiêu cực của các bình luận về chủ đề trường học và sinh viên.
+              Tôi được huấn luyện bằng phương pháp Support Vector Machines (SVM) 
+              với bộ dữ liệu <a href="https://s.net.vn/3SdS"
+              target="_blank">Vietnamese Sentiment Analyst (Kaggle)</a>.
               `
           })
         }

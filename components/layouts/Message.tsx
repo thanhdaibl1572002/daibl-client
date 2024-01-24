@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 import { FC, memo, useEffect, useRef, useState } from 'react'
 import styles from '@/components/layouts/message.module.sass'
