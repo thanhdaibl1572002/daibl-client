@@ -20,11 +20,11 @@ const ChatBox: FC = () => {
   const [dataDAIBL, setDataDAIBL] = useState({})
   const [limit, setLimit] = useState(10)
   const [loadMore, setLoadMore] = useState(false)
-  const [isScrollEnd, setIsScrollEnd] = useState(false)
+  const [isScrollEnd, setIsScrollEnd] = useState(true)
 
   const messagesRef = useRef<HTMLDivElement>(null)
 
-  // const { isMessageComplete } = useMessageContext()
+  const { isMessageComplete } = useMessageContext()
 
   useEffect(() => {
     const userId = localStorage.getItem('DAIBL_userId')
@@ -46,15 +46,15 @@ const ChatBox: FC = () => {
   }, [limit])
 
   useEffect(() => {
-    messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
-  }, [dataDAIBL])
+    isScrollEnd && (messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight)
+  }, [dataDAIBL, isScrollEnd])
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const isAtTop = event.currentTarget.scrollTop === 0
     const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight - 25
     const isDataExhausted = Object.entries(dataDAIBL).length < limit
     isAtTop && !isDataExhausted && (setLimit(prevLimit => prevLimit + 10), setLoadMore(true))
-    // isAtBottom ? setIsScrollEnd(false) : setIsScrollEnd(true)
+    isAtBottom ? setIsScrollEnd(true) : setIsScrollEnd(false)
   }
 
   return (
@@ -119,13 +119,13 @@ const ChatBox: FC = () => {
           )
         }
       </div>
-      {/* {isScrollEnd && !isMessageComplete && (
+      {!isScrollEnd && !isMessageComplete && (
         <div className={styles._generating}>
           Đang trả lời
           <span></span>
         </div>
-      )} */}
-      {isScrollEnd && (
+      )}
+      {!isScrollEnd && (
         <div className={styles._scroll__end}>
           <Button
             label=''
