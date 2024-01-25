@@ -24,7 +24,7 @@ const ChatBox: FC = () => {
 
   const messagesRef = useRef<HTMLDivElement>(null)
 
-  const { isMessageComplete } = useMessageContext()
+  // const { isMessageComplete } = useMessageContext()
 
   useEffect(() => {
     const userId = localStorage.getItem('DAIBL_userId')
@@ -119,12 +119,12 @@ const ChatBox: FC = () => {
           )
         }
       </div>
-      {isScrollEnd && !isMessageComplete && (
+      {/* {isScrollEnd && !isMessageComplete && (
         <div className={styles._generating}>
           Đang trả lời
           <span></span>
         </div>
-      )}
+      )} */}
       {isScrollEnd && (
         <div className={styles._scroll__end}>
           <Button
