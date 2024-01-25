@@ -18,23 +18,12 @@ const SignIn: FC = () => {
     return (
       <main className={styles._container}>
         <div className={styles._login}>
-          <Image
-            src={'/images/common/logo.png'}
-            alt={'DAIBL Logo'}
-            width={200}
-            height={200}
-          />
-          <div className={styles._welcome}>
-            <h2>👋Xin chào👋</h2>
-            <p>Chào mừng bạn đến với <strong>DAIBL</strong>, đăng nhập để sử dụng chat nhé 😍</p>
-            {/* 👋 */}
-          </div>
           <button onClick={() => signIn('google', { callbackUrl: '/' })}>
-            <span><FcGoogle /></span>
-            <p>
-              Đăng nhập với Google
-            </p>
-          </button>
+              <span><FcGoogle /></span>
+              <p>
+                Đăng nhập với Google
+              </p>
+            </button>
         </div>
       </main>
     )
