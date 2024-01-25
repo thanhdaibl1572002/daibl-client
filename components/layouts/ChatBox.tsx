@@ -51,7 +51,7 @@ const ChatBox: FC = () => {
 
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const isAtTop = event.currentTarget.scrollTop === 0
-    const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight
+    const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight - 25
     const isDataExhausted = Object.entries(dataDAIBL).length < limit
     isAtTop && !isDataExhausted && (setLimit(prevLimit => prevLimit + 10), setLoadMore(true))
     isAtBottom ? setIsScrollEnd(false) : setIsScrollEnd(true)
