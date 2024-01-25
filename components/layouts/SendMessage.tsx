@@ -48,7 +48,7 @@ const SendMessage: FC = () => {
                             isResult: true,
                         }
                         if (response.data == '-2') {
-                            resultMessage.text = `Bình luận ${newMessage.text} có thể không phải là tiếng Việt, điều
+                            resultMessage.text = `Bình luận "${newMessage.text}" có thể không phải là tiếng Việt, điều
                             này có thể ảnh hưởng đến kết quả dự đoán của mô hình, vui lòng thử những bình luận khác.`
                         }
                         else if (response.data == '-1') {
