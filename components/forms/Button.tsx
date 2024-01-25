@@ -1,5 +1,5 @@
 'use client'
-import React, { FC, ReactElement, ReactNode, useState, MouseEvent, useEffect, useRef, ButtonHTMLAttributes } from 'react'
+import React, { FC, ReactElement, ReactNode, useState, MouseEvent, useEffect, useRef, ButtonHTMLAttributes, memo } from 'react'
 import styles from '@/components/forms/button.module.sass'
 import {
     whiteColor, blackGradientColor, mainGradientColor,
@@ -12,7 +12,6 @@ import {
     greenColor
 }
     from '@/components/variables'
-import Link from 'next/link'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     width?: number | string
@@ -135,4 +134,4 @@ const Button: FC<ButtonProps> = ({
     )
 }
 
-export default Button
+export default memo(Button)

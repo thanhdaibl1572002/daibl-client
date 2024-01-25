@@ -1,4 +1,4 @@
-import { FC } from 'react'
+import { FC, memo } from 'react'
 import styles from '@/components/common/logo.module.sass'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -46,4 +46,4 @@ const Logo: FC<LogoProps> = ({
   )
 }
 
-export default Logo
+export default memo(Logo)

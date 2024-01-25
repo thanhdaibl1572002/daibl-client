@@ -1,5 +1,5 @@
 'use client'
-import { FC, memo, useState } from 'react'
+import { FC, memo, useRef, useState } from 'react'
 import styles from '@/components/layouts/sendmessage.module.sass'
 import TextArea from '@/components/forms/TextArea'
 import Button from '@/components/forms/Button'
@@ -9,13 +9,16 @@ import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import axios from 'axios'
 import { useMessageContext } from '@/providers/MessageProvider'
-import { getColorLevel, mainColor } from '@/components/variables'
+import { getColorLevel, mainColor, serverLink } from '@/components/variables'
+import generateRandomResponse from '@/utils/generateResponse'
 
 const SendMessage: FC = () => {
 
     const [text, setText] = useState<string>('')
 
     const { isMessageComplete, setIsMessageComplete } = useMessageContext()
+
+    const sendMessageRef = useRef<HTMLDivElement>(null)
 
     const handleSendMessage = async () => {
         if (text.trim()) {
@@ -31,23 +34,25 @@ const SendMessage: FC = () => {
                 setText('')
                 set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
                 setIsMessageComplete(false)
+                let parentElement = sendMessageRef.current!.parentNode as Element
+                parentElement!.scrollTop = parentElement!.scrollHeight
                 try {
-                    const response = await axios.post('https://daibl-server.onrender.com/predict', { 
+                    const response = await axios.post(`${serverLink}/predict`, { 
                         comment: newMessage.text 
                     })
-                    if (response.data) {
+                    if (response.data.toString()) {
                         const resultMessage: IMessage = {
                             id: Date.now().toString(),
                             text: '',
                             isComplete: false,
                             isResult: true,
                         }
-                        if (response.data === -1) {
-                            resultMessage.text = generateRandomResponse(newMessage.text, 'tiêu cực')
-                        } else if (response.data === 0) {
-                            resultMessage.text = generateRandomResponse(newMessage.text, 'trung lập')
-                        } else if (response.data === 1) {
-                            resultMessage.text = generateRandomResponse(newMessage.text, 'tích cực')
+                        if (response.data == '-1') {
+                            resultMessage.text = generateRandomResponse(newMessage.text, '<b>tiêu cực</b>')
+                        } else if (response.data == '0') {
+                            resultMessage.text = generateRandomResponse(newMessage.text, '<b>trung lập</b>')
+                        } else if (response.data == '1') {
+                            resultMessage.text = generateRandomResponse(newMessage.text, '<b>tích cực</b>')
                         }
                         set(ref(db, `/data/${userId}/messages/${resultMessage.id}`), resultMessage)
                     }
@@ -60,7 +65,10 @@ const SendMessage: FC = () => {
     }
 
     return (
-        <div className={styles._container}>
+        <div 
+            className={styles._container}
+            ref={sendMessageRef}
+        >
             <div className={styles._form}>
                 <TextArea
                     width={'100%'}
@@ -69,7 +77,7 @@ const SendMessage: FC = () => {
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
                     border={`1px solid ${getColorLevel(mainColor, 20)}`}
-                    placeholder={'Viết bình luận tại đây'}
+                    placeholder={'Viết bình luận sản phẩm tại đây'}
                     value={text}
                     onChange={event => setText(event.target.value)}
                     onKeyDown={event => {

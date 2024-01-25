@@ -31,20 +31,14 @@ const Message: FC<MessageProps> = ({
     const textResultRef = useRef<HTMLSpanElement>(null)
     const textCommentRef = useRef<HTMLSpanElement>(null)
 
+    const { setIsMessageComplete } = useMessageContext()
+
     const copyToClipboard = (type: 'result' | 'comment'): void => {
         const content = type === 'result' ? textResultRef.current!.textContent : textCommentRef.current!.textContent
         content && navigator.clipboard.writeText(content.replace(/\s+/g, ' ').trim())
     }
 
-    useEffect(() => {
-        if (isComplete) {
-            setIsMessageComplete(true)
-        } else {
-            setIsMessageComplete(false)
-        }
-    }, [])
-
-    const { setIsMessageComplete } = useMessageContext()
+    useEffect(() => setIsMessageComplete(isComplete), [])
 
     useEffect(() => {
         if (isResult && !isComplete) {
@@ -52,18 +46,10 @@ const Message: FC<MessageProps> = ({
             const textInterval = setInterval(() => {
                 setMessageText(text.slice(0, index))
                 index++
-                if (index > text.length) {
-                    clearInterval(textInterval)
-                } 
-                else if (messageRef.current && !isComplete) {
-                    let parentElement = messageRef.current!.parentNode as Element
-                    const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight - 1
-                    if (isAtBottom) {
-                        requestAnimationFrame(() => {
-                            parentElement!.scrollTop = parentElement!.scrollHeight
-                        })
-                    }
-                }
+                let parentElement = messageRef.current!.parentNode as Element
+                const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight - 25
+                isAtBottom && (parentElement!.scrollTop = parentElement!.scrollHeight)
+                index > text.length && clearInterval(textInterval)
             }, 20)
             return () => clearInterval(textInterval)
         }
@@ -78,8 +64,7 @@ const Message: FC<MessageProps> = ({
                 isResult: true,
             }
             const userId = localStorage.getItem('DAIBL_userId')
-            if (userId)
-                set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
+            userId && set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
             setIsMessageComplete(true)
         }
     }, [messageText, id, text, isResult, isComplete, setIsMessageComplete])

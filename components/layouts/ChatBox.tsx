@@ -11,7 +11,7 @@ import Button from '../forms/Button'
 import { signOut } from 'next-auth/react'
 import { IoArrowDownOutline, IoLogOutOutline } from 'react-icons/io5'
 import { SiGooglecolab } from 'react-icons/si'
-import { getColorLevel, mainColor } from '@/components/variables'
+import { getColorLevel, mainColor, modelLink } from '@/components/variables'
 import LoadMore from '../common/LoadMore'
 import { useMessageContext } from '@/providers/MessageProvider'
 
@@ -20,7 +20,6 @@ const ChatBox: FC = () => {
   const [dataDAIBL, setDataDAIBL] = useState({})
   const [limit, setLimit] = useState(10)
   const [loadMore, setLoadMore] = useState(false)
-  const [isGenerating, setIsGenerating] = useState(false)
   const [isScrollEnd, setIsScrollEnd] = useState(false)
 
   const messagesRef = useRef<HTMLDivElement>(null)
@@ -32,39 +31,31 @@ const ChatBox: FC = () => {
     if (userId) {
       const messagesQuery = query(ref(db, `/data/${userId}/messages`), limitToLast(limit))
       const unsubscribe = onValue(messagesQuery, (snapshot) => {
-
         const currentScrollTop = messagesRef.current!.scrollTop
         const currentScrollHeight = messagesRef.current!.scrollHeight
-
         const newData = snapshot.val()
-        setTimeout(() => {
-          setDataDAIBL(newData)
-          setLoadMore(false)
-
-          requestAnimationFrame(() => {
-            const newScrollTop = currentScrollTop + (messagesRef.current!.scrollHeight - currentScrollHeight)
-            messagesRef.current!.scrollTop = newScrollTop
-          })
-        }, 500)
+        setDataDAIBL(newData)
+        setLoadMore(false)
+        requestAnimationFrame(() => {
+          const newScrollTop = currentScrollTop + (messagesRef.current!.scrollHeight - currentScrollHeight)
+          messagesRef.current!.scrollTop = newScrollTop
+        })
       })
       return () => unsubscribe()
     }
   }, [limit])
 
+  useEffect(() => {
+    messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
+  }, [dataDAIBL])
+
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const isAtTop = event.currentTarget.scrollTop === 0
-    const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight - 50
+    const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight
     const isDataExhausted = Object.entries(dataDAIBL).length < limit
     isAtTop && !isDataExhausted && (setLimit(prevLimit => prevLimit + 10), setLoadMore(true))
-    isMessageComplete ? setIsGenerating(false) : (isAtBottom ? setIsGenerating(false) : setIsGenerating(true))
     isAtBottom ? setIsScrollEnd(false) : setIsScrollEnd(true)
   }
-
-  useEffect(() => {
-    if (limit === 10) {
-      messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
-    }
-  }, [dataDAIBL, limit])
 
   return (
     <div
@@ -84,7 +75,7 @@ const ChatBox: FC = () => {
         />
         <Button
           label='Source Code'
-          icon={<SiGooglecolab />}
+          icon={useMemo(() => <SiGooglecolab />, [])}
           iconSize={24}
           textSize={15}
           width={'fit-content'}
@@ -92,11 +83,11 @@ const ChatBox: FC = () => {
           onClick={signOut}
           theme={'light'}
           borderRadius={6}
-          link={'https://s.net.vn/uhZr'}
+          link={modelLink}
         />
         <Button
           label=''
-          icon={<IoLogOutOutline />}
+          icon={useMemo(() => <IoLogOutOutline />, [])}
           iconSize={22}
           width={38}
           height={38}
@@ -112,7 +103,7 @@ const ChatBox: FC = () => {
       >
         {loadMore && <LoadMore />}
         {
-          dataDAIBL && Object.entries(dataDAIBL) && Object.entries(dataDAIBL).length > 0 && (
+          dataDAIBL && Object.keys(dataDAIBL) && Object.keys(dataDAIBL).length > 0 && (
             Object.entries(dataDAIBL).map(([key, value]) => {
               const message = value as IMessage
               return (
@@ -128,7 +119,7 @@ const ChatBox: FC = () => {
           )
         }
       </div>
-      {isGenerating && (
+      {isScrollEnd && !isMessageComplete && (
         <div className={styles._generating}>
           Đang trả lời
           <span></span>
@@ -136,17 +127,17 @@ const ChatBox: FC = () => {
       )}
       {isScrollEnd && (
         <div className={styles._scroll__end}>
-        <Button
-          label=''
-          icon={<IoArrowDownOutline />}
-          iconSize={18}
-          width={35}
-          height={35}
-          theme={'light'}
-          borderRadius={'50%'}
-          onClick={() => messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight}
-        />
-      </div>
+          <Button
+            label=''
+            icon={<IoArrowDownOutline />}
+            iconSize={18}
+            width={35}
+            height={35}
+            theme={'light'}
+            borderRadius={'50%'}
+            onClick={() => messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight}
+          />
+        </div>
       )}
       <SendMessage />
     </div>

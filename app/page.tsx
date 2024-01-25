@@ -25,14 +25,24 @@ const Home: FC = ({ }) => {
             isResult: true,
             text: `
               Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
-              một mô hình máy học được phát triển bởi
-              😍 <a href="${facebookLink}" target="_blank">
-              Trương Thành Đại BL</a> 😍 Tôi chỉ có thể giúp bạn dự đoán cảm xúc tích cực, tiêu cực
-              hoặc trung lập của các bình luận về chủ đề mua sắm thời trang. 
+              một mô hình máy học được huấn luyện với mục đích dự đoán cảm xúc có trong
+              bình luận, phản hồi của khách hàng về sản phẩm mà họ đã trải nghiệm
+              khi mua hàng từ các cửa hàng thời trang. Kết quả của dự đoán có thể 
+              bao gồm một trong các cảm xúc <b>tích cực</b>, <b>tiêu cực</b> hoặc <b>trung lập</b>.
+              <br/> 
+              Ví dụ, bạn có thể bình luận về các sản phẩm thời trang mà bạn đã mua
+              được, sau đó mô hình sẽ giúp dự đoán cảm xúc có trong bình luận
+              của bạn: 
               <br/>
-              Tôi được huấn luyện bằng phương pháp Support Vector Machines (SVM) 
-              với bộ dữ liệu <a href="${datasetLink}"
-              target="_blank">Vietnamese Sentiment Analyst (Kaggle)</a>.
+              - <b>Chất liệu vải khá tốt 👍</b> 
+              <br/>
+              - <b>Giao hàng chậm, áo quá rộng 👎</b>
+              <br/>
+              - <b>Sản phẩm tạm ổn, chưa gọi là đẹp lắm 🤷</b>
+              <br/>
+              Tôi được huấn luyện bằng phương pháp Support Vector Machines (SVM)
+              với bộ dữ liệu
+              <a href="${datasetLink}"target="_blank">Vietnamese Sentiment Analyst (Kaggle)</a>.
               `
           })
         }
