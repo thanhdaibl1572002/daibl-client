@@ -47,11 +47,17 @@ const SendMessage: FC = () => {
                             isComplete: false,
                             isResult: true,
                         }
-                        if (response.data == '-1') {
+                        if (response.data == '-2') {
+                            resultMessage.text = `Bình luận ${newMessage.text} có thể không phải là tiếng Việt, điều
+                            này có thể ảnh hưởng đến kết quả dự đoán của mô hình, vui lòng thử những bình luận khác.`
+                        }
+                        else if (response.data == '-1') {
                             resultMessage.text = generateRandomResponse(newMessage.text, '<b>tiêu cực</b>')
-                        } else if (response.data == '0') {
+                        } 
+                        else if (response.data == '0') {
                             resultMessage.text = generateRandomResponse(newMessage.text, '<b>trung lập</b>')
-                        } else if (response.data == '1') {
+                        } 
+                        else if (response.data == '1') {
                             resultMessage.text = generateRandomResponse(newMessage.text, '<b>tích cực</b>')
                         }
                         set(ref(db, `/data/${userId}/messages/${resultMessage.id}`), resultMessage)
