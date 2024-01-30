@@ -5,7 +5,7 @@ import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
-import { datasetLink, facebookLink } from '@/app/variables'
+import { datasetLink } from '@/app/variables'
 
 const Home: FC = ({ }) => {
   const { data: session } = useSession({ required: true })
@@ -53,7 +53,7 @@ const Home: FC = ({ }) => {
 
   return (
     <main className={styles._container}>
-      <ChatBox />
+      {session && <ChatBox />}
     </main>
   )
 }
