@@ -29,12 +29,11 @@ const Message: FC<MessageProps> = ({
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
     const textResultRef = useRef<HTMLSpanElement>(null)
-    const textCommentRef = useRef<HTMLSpanElement>(null)
 
     const { setIsMessageComplete } = useMessageContext()
 
-    const copyToClipboard = (type: 'result' | 'comment'): void => {
-        const content = type === 'result' ? textResultRef.current!.textContent : textCommentRef.current!.textContent
+    const copyToClipboard = (): void => {
+        const content = textResultRef.current!.textContent
         content && navigator.clipboard.writeText(content.replace(/\s+/g, ' ').trim())
     }
 
@@ -87,7 +86,7 @@ const Message: FC<MessageProps> = ({
                                     height={32}
                                     theme={'light'}
                                     borderRadius={5}
-                                    onClick={() => copyToClipboard('result')}
+                                    onClick={copyToClipboard}
                                 />
                             </a>
                         )
@@ -124,45 +123,8 @@ const Message: FC<MessageProps> = ({
                     </span>
                 </p>
             ) : (
-                <p
-                    className={styles._comment}
-                >
-                    {
-                        isComplete && (
-                            <a href='#' className={styles._copy}>
-                                <Button
-                                    label=''
-                                    icon={<IoCopyOutline />}
-                                    iconSize={22}
-                                    width={32}
-                                    height={32}
-                                    theme={'light'}
-                                    borderRadius={5}
-                                    onClick={() => copyToClipboard('comment')}
-                                />
-                            </a>
-                        )
-                    }
-                    <span
-                        style={{
-                            border: `1px solid ${getColorLevel(mainColor, 5)}`,
-                            background: `${getColorLevel(mainColor, 5)}`
-                        }}
-                    >
-                        <Image
-                            src={'/images/common/avatar.png'}
-                            alt='DaiBL Logo'
-                            width={25}
-                            height={25}
-                        />
-                        Bình luận của bạn
-                    </span>
-                    <span
-                        className={styles._comment__text}
-                        ref={textCommentRef}
-                    >
-                        {text}
-                    </span>
+                <p className={styles._comment}>
+                    {text}
                 </p>
             )}
         </div>
