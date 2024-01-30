@@ -26,7 +26,7 @@ const SignIn: FC = () => {
               Đăng nhập với Google
             </p>
           </button>
-          <button onClick={() => signIn('facebook', { callbackUrl: '/' })}>
+          <button onClick={() => signIn('github', { callbackUrl: '/' })}>
             <span style={{ fontSize: 24 }}><FaGithub /></span>
             <p>
               Đăng nhập với Github
