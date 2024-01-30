@@ -4,7 +4,8 @@ import styles from '@/app/api/auth/signin/page.module.sass'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next//navigation'
 import { FcGoogle } from 'react-icons/fc'
-import Image from 'next/image'
+import { BsFacebook } from 'react-icons/bs'
+import { mainColor } from '@/app/variables'
 
 const SignIn: FC = () => {
 
@@ -19,11 +20,17 @@ const SignIn: FC = () => {
       <main className={styles._container}>
         <div className={styles._login}>
           <button onClick={() => signIn('google', { callbackUrl: '/' })}>
-              <span><FcGoogle /></span>
-              <p>
-                Đăng nhập với Google
-              </p>
-            </button>
+            <span><FcGoogle /></span>
+            <p>
+              Đăng nhập với Google
+            </p>
+          </button>
+          <button onClick={() => signIn('facebook', { callbackUrl: '/' })}>
+            <span style={{ color: mainColor, fontSize: 24 }}><BsFacebook /></span>
+            <p>
+              Đăng nhập với Facebook
+            </p>
+          </button>
         </div>
       </main>
     )
