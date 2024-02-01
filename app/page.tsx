@@ -11,6 +11,7 @@ const Home: FC = ({ }) => {
   const { data: session } = useSession({ required: true })
   const [authId, setAuthId] = useState(null)
 
+
   useEffect(() => {
     if (session && session.user.id !== authId) {
       setAuthId(session.user.id)

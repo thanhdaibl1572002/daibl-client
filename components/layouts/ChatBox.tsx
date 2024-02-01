@@ -14,8 +14,11 @@ import { SiGooglecolab } from 'react-icons/si'
 import { getColorLevel, mainColor, modelLink } from '@/components/variables'
 import LoadMore from '../common/LoadMore'
 import { useMessageContext } from '@/providers/MessageProvider'
+import { useSession } from 'next-auth/react'
 
 const ChatBox: FC = () => {
+
+  const { data: session } = useSession()
 
   const [dataDAIBL, setDataDAIBL] = useState({})
   const [limit, setLimit] = useState(10)
@@ -43,7 +46,7 @@ const ChatBox: FC = () => {
       })
       return () => unsubscribe()
     }
-  }, [limit])
+  }, [limit, session])
 
   useEffect(() => {
     isScrollEnd && (messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight)

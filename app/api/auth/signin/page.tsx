@@ -14,7 +14,6 @@ const SignIn: FC = () => {
 
   if (session) {
     router.push('/')
-    window.location.reload()
   } else {
     return (
       <main className={styles._container}>
