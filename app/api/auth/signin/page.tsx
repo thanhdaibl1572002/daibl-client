@@ -2,10 +2,8 @@
 import { FC } from 'react'
 import styles from '@/app/api/auth/signin/page.module.sass'
 import { signIn, useSession } from 'next-auth/react'
-import { useRouter } from 'next//navigation'
+import { useRouter } from 'next/navigation'
 import { FcGoogle } from 'react-icons/fc'
-// import { BsFacebook } from 'react-icons/bs'
-import { mainColor } from '@/app/variables'
 import { FaGithub } from 'react-icons/fa'
 
 const SignIn: FC = () => {
@@ -16,6 +14,7 @@ const SignIn: FC = () => {
 
   if (session) {
     router.push('/')
+    window.location.reload()
   } else {
     return (
       <main className={styles._container}>
