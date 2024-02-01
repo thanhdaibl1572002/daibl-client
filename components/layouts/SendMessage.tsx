@@ -37,7 +37,7 @@ const SendMessage: FC = () => {
                 let parentElement = sendMessageRef.current!.parentNode as Element
                 parentElement!.scrollTop = parentElement!.scrollHeight
                 try {
-                    const response = await axios.post(`${serverLink}/predict`, { 
+                    const response = await axios.post(`${serverLink}/predict/svm`, { 
                         comment: newMessage.text 
                     })
                     if (response.data.toString()) {
