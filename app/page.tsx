@@ -3,7 +3,6 @@ import { FC, useEffect, useState } from 'react'
 import styles from './page.module.sass'
 import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
 import { datasetLink } from '@/app/variables'
@@ -11,11 +10,6 @@ import { datasetLink } from '@/app/variables'
 const Home: FC = ({ }) => {
   const { data: session } = useSession({ required: true })
   const [authId, setAuthId] = useState(null)
-  const router = useRouter()
-
-  useEffect(() => {
-    router.reload()
-  }, [session, authId, router])
 
   useEffect(() => {
     if (session && session.user.id !== authId) {
@@ -31,14 +25,13 @@ const Home: FC = ({ }) => {
             isResult: true,
             text: `
               Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
-              một mô hình máy học được huấn luyện với mục đích dự đoán cảm xúc có trong
-              bình luận, phản hồi của khách hàng về sản phẩm mà họ đã trải nghiệm
-              khi mua hàng từ các cửa hàng thời trang. Kết quả của dự đoán có thể 
-              bao gồm một trong các cảm xúc <b>tích cực</b>, <b>tiêu cực</b> hoặc <b>trung lập</b>.
+              mô hình máy học được huấn luyện nhằm dự đoán cảm xúc
+              từ bình luận của khách hàng về sản phẩm thời trang đã trải nghiệm.
+              Kết quả dự đoán bao gồm một trong các cảm xúc <b>tích cực</b>, 
+              <b>tiêu cực</b> hoặc <b>trung lập</b>.
               <br/> 
-              Ví dụ, bạn có thể bình luận về các sản phẩm thời trang mà bạn đã mua
-              được, sau đó mô hình sẽ giúp dự đoán cảm xúc có trong bình luận
-              của bạn: 
+              Bạn có thể đưa ra bình luận về sản phẩm, mô hình sẽ giúp dự đoán cảm xúc 
+              có trong bình luận của bạn, ví dụ: 
               <br/>
               - <b>Chất liệu vải khá tốt 👍</b> 
               <br/>
