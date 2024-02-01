@@ -26,7 +26,7 @@ const Home: FC = ({ }) => {
             isResult: true,
             text: `
               Xin chào <b>${session.user.name}</b>! Tôi tên <strong>DAIBL</strong>,
-              mô hình máy học được huấn luyện nhằm dự đoán cảm xúc
+              mô hình máy học được huấn luyện để có thể dự đoán cảm xúc
               từ bình luận của khách hàng về sản phẩm thời trang đã trải nghiệm.
               Kết quả dự đoán bao gồm một trong các cảm xúc <b>tích cực</b>, 
               <b>tiêu cực</b> hoặc <b>trung lập</b>.
