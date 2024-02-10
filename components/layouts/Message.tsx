@@ -11,6 +11,7 @@ import { useMessageContext } from '@/providers/MessageProvider'
 import parse from 'html-react-parser'
 import Button from '@/components/forms/Button'
 import { getColorLevel, mainColor } from '@/components/variables'
+import { mainGradientColor } from '@/app/variables'
 
 interface MessageProps {
     id: string
@@ -123,7 +124,7 @@ const Message: FC<MessageProps> = ({
                     </span>
                 </p>
             ) : (
-                <p className={styles._comment}>
+                <p className={styles._comment} >
                     {text}
                 </p>
             )}
