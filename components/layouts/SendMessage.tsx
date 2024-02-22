@@ -26,7 +26,7 @@ const SendMessage: FC = () => {
     const daiblResponse = async (message: string, userId: string): Promise<void> => {
         try {
             setIsMessageLoading(true)
-            const response = await axios.post(`${process.env.SERVER_LINK}/predict/svm`, { comment: message })
+            const response = await axios.post(`${process.env.SERVER_LINK}/predict`, { comment: message })
             if (response.data.toString()) {
                 const resultMessage: IMessage = {
                     id: Date.now().toString(),
