@@ -1,4 +1,4 @@
-@import ../variables
+@import ../../variables
 
 ._container
     display: flex
@@ -35,6 +35,9 @@
         overflow-y: scroll
         overflow-x: hidden
         position: relative
+
+        @media ( max-width: 750px )
+            padding: 70px 10px 0 10px
 
     ._generating
         font-size: 14px

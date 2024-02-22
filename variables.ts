@@ -1,9 +1,3 @@
-export const modelLink = 'https://s.net.vn/uhZr'
-export const facebookLink = 'https://s.net.vn/0v2d'
-export const datasetLink = 'https://s.net.vn/3SdS'
-export const serverLink = 'https://daibl-server.onrender.com'
-// export const serverLink = 'http://127.0.0.1:5000'
-
 export const mainColor = 'rgb(39,142,255)'
 export const whiteColor = 'rgb(255, 255, 255)'
 export const blackColor = 'rgb(30, 39, 46)'

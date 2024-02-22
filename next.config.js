@@ -17,6 +17,9 @@ const nextConfig = {
         GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,
         NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
         GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+        MODEL_LINK: process.env.MODEL_LINK,
+        DATASET_LINK: process.env.DATASET_LINK,
+        SERVER_LINK: process.env.SERVER_LINK,
     },
 }
 

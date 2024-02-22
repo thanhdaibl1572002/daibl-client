@@ -1,7 +1,7 @@
 import { FC } from 'react'
 import styles from '@/components/common/loadmore.module.sass'
 import Image from 'next/image'
-import { mainColor } from '@/components/variables'
+import { mainColor } from '@/variables'
 
 interface LoadMoreProps {
   color?: string

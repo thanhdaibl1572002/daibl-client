@@ -5,7 +5,6 @@ import ChatBox from '@/components/layouts/ChatBox'
 import { useSession } from 'next-auth/react'
 import db from '@/firebase/db'
 import { ref, get, set } from 'firebase/database'
-import { datasetLink } from '@/app/variables'
 import { useModeContext } from '@/providers/ModeProvider'
 
 const Home: FC = ({ }) => {
@@ -31,7 +30,7 @@ const Home: FC = ({ }) => {
             \n*-* Chất liệu vải khá tốt 👍
             \n*-* Giao hàng chậm, áo quá rộng 👎
             \n*-* Sản phẩm tạm ổn, chưa gọi là đẹp lắm 🤷
-            \nTôi được huấn luyện bằng phương pháp Support Vector Machines (SVM) với bộ dữ liệu [Vietnamese Sentiment Analyst (Kaggle)](${datasetLink})`
+            \nTôi được huấn luyện bằng phương pháp Support Vector Machines (SVM) với bộ dữ liệu [Vietnamese Sentiment Analyst (Kaggle)](${process.env.DATASET_LINK})`
             :
             `Xin chào **${authData.username}**! Tôi là **GEMINI**, một mô hình ngôn ngữ lớn được phát triển bởi Google AI. Tôi có thể thực hiện nhiều nhiệm vụ khác nhau như:
             \n*-* Viết các bài báo, email, bài thơ, kịch bản, v.v.

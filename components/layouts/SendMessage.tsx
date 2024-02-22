@@ -9,7 +9,7 @@ import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import axios from 'axios'
 import { useMessageContext } from '@/providers/MessageProvider'
-import { getColorLevel, mainColor, geminiColor, serverLink } from '@/components/variables'
+import { getColorLevel, mainColor, geminiColor } from '@/variables'
 import generateRandomResponse from '@/utils/generateResponse'
 import { useModeContext } from '@/providers/ModeProvider'
 import { GoogleGenerativeAI } from '@google/generative-ai'
@@ -26,7 +26,7 @@ const SendMessage: FC = () => {
     const daiblResponse = async (message: string, userId: string): Promise<void> => {
         try {
             setIsMessageLoading(true)
-            const response = await axios.post(`${serverLink}/predict/svm`, { comment: message })
+            const response = await axios.post(`${process.env.SERVER_LINK}/predict/svm`, { comment: message })
             if (response.data.toString()) {
                 const resultMessage: IMessage = {
                     id: Date.now().toString(),
@@ -40,10 +40,10 @@ const SendMessage: FC = () => {
                 }
                 else if (response.data == '-1') {
                     resultMessage.text = generateRandomResponse(message, '**tiêu cực**')
-                } 
+                }
                 else if (response.data == '0') {
                     resultMessage.text = generateRandomResponse(message, '**trung lập**')
-                } 
+                }
                 else if (response.data == '1') {
                     resultMessage.text = generateRandomResponse(message, '**tích cực**')
                 }
@@ -61,7 +61,7 @@ const SendMessage: FC = () => {
         try {
             setIsMessageLoading(true)
             const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string)
-            const model = genAI.getGenerativeModel({ model: "gemini-pro" })
+            const model = genAI.getGenerativeModel({ model: 'gemini-pro' })
             const result = await model.generateContent(message)
             const response = await result.response
             const resultMessage: IMessage = {
@@ -96,19 +96,19 @@ const SendMessage: FC = () => {
                 setIsMessageComplete(false)
                 let parentElement = sendMessageRef.current!.parentNode as Element
                 parentElement!.scrollTop = parentElement!.scrollHeight
-                mode === 'daibl' 
-                ? daiblResponse(newMessage.text, userId)
-                : geminiResponse(newMessage.text, userId)
+                mode === 'daibl'
+                    ? daiblResponse(newMessage.text, userId)
+                    : geminiResponse(newMessage.text, userId)
             }
         }
     }
 
     return (
-        <div 
+        <div
             className={styles._container}
             ref={sendMessageRef}
         >
-            <div 
+            <div
                 className={styles._form}
                 style={{
                     border: `1px solid ${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 10)}`
@@ -121,7 +121,7 @@ const SendMessage: FC = () => {
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
                     border={`1px solid ${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 20)}`}
-                    placeholder={mode === 'daibl' ? 'Phân loại bình luận với DAIBL': 'Trò chuyện với Gemini AI'}
+                    placeholder={mode === 'daibl' ? 'Phân loại bình luận với DAIBL' : 'Trò chuyện với Gemini AI'}
                     value={text}
                     onChange={event => setText(event.target.value)}
                     onKeyDown={event => {

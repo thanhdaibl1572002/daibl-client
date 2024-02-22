@@ -9,7 +9,7 @@ import db from '@/firebase/db'
 import { signOut } from 'next-auth/react'
 import { IoArrowDownOutline, IoLogOutOutline } from 'react-icons/io5'
 import { SiGooglebard, SiNintendogamecube } from 'react-icons/si'
-import { getColorLevel, mainColor, geminiColor } from '@/components/variables'
+import { getColorLevel, mainColor, geminiColor } from '@/variables'
 import Logo from '@/components/common/Logo'
 import Button from '@/components/forms/Button'
 import LoadMore from '@/components/common/LoadMore'
@@ -127,7 +127,7 @@ const ChatBox: FC = () => {
             id={Date.now().toString()}
             isResult={true}
             isComplete={true}
-            text={'## **Đang tạo câu trả lời, vui lòng đợi :))**'}
+            text={'**Đang tạo câu trả lời, vui lòng đợi...**'}
           />
         )}
       </div>

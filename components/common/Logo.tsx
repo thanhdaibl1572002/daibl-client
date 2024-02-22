@@ -1,7 +1,7 @@
 import { FC, ReactElement, ReactNode, memo } from 'react'
 import styles from '@/components/common/logo.module.sass'
 import Link from 'next/link'
-import { mainColor } from '@/components/variables'
+import { mainColor } from '@/variables'
 import { SiNintendogamecube } from 'react-icons/si'
 
 interface LogoProps {

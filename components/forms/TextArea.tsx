@@ -2,7 +2,7 @@
 import { FC, ReactElement, ReactNode, TextareaHTMLAttributes, memo, useState } from 'react'
 import { IoAlertCircleOutline } from 'react-icons/io5'
 import styles from '@/components/forms/textarea.module.sass'
-import { getColorLevel, mainColor } from '@/components/variables'
+import { getColorLevel, mainColor } from '@/variables'
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   width?: number | string

@@ -12,7 +12,7 @@ import {
     geminiColor,
     geminiGradientColor,
 }
-    from '@/components/variables'
+    from '@/variables'
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     width?: number | string
