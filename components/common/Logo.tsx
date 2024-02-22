@@ -1,24 +1,22 @@
-import { FC, memo } from 'react'
+import { FC, ReactElement, ReactNode, memo } from 'react'
 import styles from '@/components/common/logo.module.sass'
-import Image from 'next/image'
 import Link from 'next/link'
 import { mainColor } from '@/components/variables'
+import { SiNintendogamecube } from 'react-icons/si'
 
 interface LogoProps {
-  imageWidth?: number
-  imageHeight?: number
-  imageSrc?: string
-  altText?: string
+  logoIcon?: ReactNode | ReactElement
   logoText?: string
+  iconSize?: number | string
+  iconColor?: string
   textSize?: number | string
   textColor?: string
 }
 
 const Logo: FC<LogoProps> = ({
-  imageWidth = 50,
-  imageHeight = 50,
-  altText = 'DAIBL Logo',
-  imageSrc = '/images/common/logo.png',
+  logoIcon = <SiNintendogamecube />,
+  iconSize = 32,
+  iconColor = mainColor,
   textSize = '13.5px',
   textColor = mainColor,
   logoText = 'DaiBL',
@@ -28,20 +26,22 @@ const Logo: FC<LogoProps> = ({
         href={'/'}
         className={styles._container}
     >
-        <Image 
-          src={imageSrc}
-          alt={altText}
-          width={imageWidth}
-          height={imageHeight}
-        />
-        <h1
-          style={{
-            fontSize: textSize,
-            color: textColor
-          }}
-        >
-          {logoText}
-        </h1>
+      <span 
+        style={{ 
+          fontSize: iconSize,
+          color: iconColor,
+        }}
+      >
+        {logoIcon}
+      </span>
+      <h1
+        style={{
+          fontSize: textSize,
+          color: textColor
+        }}
+      >
+        {logoText}
+      </h1>
     </Link>
   )
 }

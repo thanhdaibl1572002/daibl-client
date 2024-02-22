@@ -9,7 +9,8 @@ import {
     yellowGradientColor,
     mainColor,
     getColorLevel,
-    greenColor
+    geminiColor,
+    geminiGradientColor,
 }
     from '@/components/variables'
 
@@ -23,7 +24,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     icon?: ReactNode | ReactElement
     className?: string
     borderRadius?: number | string
-    theme?: 'default' | 'light' | 'dark' | 'danger' | 'warning' | 'success' | 'gpt'
+    theme?: 'daibl' | 'light' | 'dark' | 'danger' | 'warning' | 'success' | 'gemini' | 'geminiLight'
     iconPosition?: 'left' | 'right'
     link?: string
     onClick?: () => void
@@ -38,7 +39,7 @@ const Button: FC<ButtonProps> = ({
     icon,
     className,
     borderRadius = '8px',
-    theme = 'default',
+    theme = 'daibl',
     iconPosition = 'left',
     textWeight = 500,
     link,
@@ -47,13 +48,14 @@ const Button: FC<ButtonProps> = ({
 }) => {
 
     const themeColors = {
-        default: mainGradientColor,
+        daibl: mainGradientColor,
         light: whiteGradientColor,
         dark: blackGradientColor,
         danger: redGradientColor,
         warning: yellowGradientColor,
         success: greenGradientColor,
-        gpt: whiteColor,
+        gemini: geminiGradientColor,
+        geminiLight: whiteColor,
     }
 
     const [bubblePosition, setBubblePosition] = useState<{ x: number, y: number }>({ x: 0, y: 0 })
@@ -102,8 +104,8 @@ const Button: FC<ButtonProps> = ({
                 fontWeight: textWeight,
                 background: themeColors[theme],
                 borderRadius: borderRadius,
-                color: theme === 'light' ? mainColor : theme === 'gpt' ? greenColor : whiteColor,
-                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : theme === 'gpt' ? `1px solid ${getColorLevel(greenColor, 20)}` : 'none',
+                color: theme === 'light' ? mainColor : theme === 'geminiLight' ? geminiColor : whiteColor,
+                border: theme === 'light' ? `1px solid ${getColorLevel(mainColor, 20)}` : theme === 'geminiLight' ? `1px solid ${getColorLevel(geminiColor, 20)}` : 'none',
                 flexDirection: iconPosition === 'left' ? 'row' : 'row-reverse',
             }}
             {...rest}
@@ -125,7 +127,7 @@ const Button: FC<ButtonProps> = ({
                     style={{
                         top: bubblePosition.y,
                         left: bubblePosition.x,
-                        background: theme === 'light' || theme === 'gpt' ? getColorLevel(mainColor, 15) : getColorLevel(whiteColor, 25)
+                        background: theme === 'light' || theme === 'geminiLight' ? getColorLevel(mainColor, 15) : getColorLevel(whiteColor, 25)
                     }}
                 >
                 </span>

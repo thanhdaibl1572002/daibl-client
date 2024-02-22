@@ -3,6 +3,7 @@ import './globals.sass'
 import type { Metadata } from 'next'
 import AuthProvider from '@/providers/AuthProvider'
 import MessageProvider from '@/providers/MessageProvider'
+import ModeProvider from '@/providers/ModeProvider'
 
 
 export const metadata: Metadata = {
@@ -19,9 +20,11 @@ const RootLayout: FC<RootLayoutProps> = ({ children }) => {
     <html lang="en">
       <body>
         <AuthProvider>
-          <MessageProvider>
-            {children}
-          </MessageProvider>
+          <ModeProvider>
+            <MessageProvider>
+              {children}
+            </MessageProvider>
+          </ModeProvider>
         </AuthProvider>
       </body>
     </html>

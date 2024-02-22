@@ -12,6 +12,7 @@ export const yellowColor = 'rgb(255, 242, 0)'
 export const redColor = 'rgb(255, 56, 56)'
 export const greenColor = 'rgb(50, 255, 126)'
 export const blueColor = 'rgb(24, 220, 255)'
+export const geminiColor = 'rgb(119, 44, 232)'
 
 export const mainGradientColor = 'linear-gradient( 109.6deg,  rgba(39,142,255,1) 11.2%, rgba(98,113,255,0.78) 100.2% )'
 export const whiteGradientColor = 'linear-gradient( 359.3deg,  rgb(255, 255, 255) 1%, rgb(255, 255, 255) 70.9% )'
@@ -21,6 +22,7 @@ export const yellowGradientColor = 'linear-gradient( 108.5deg,  rgba(255,185,0,1
 export const redGradientColor = 'linear-gradient( 111.3deg,  rgba(252,56,56,1) 11.7%, rgba(237,13,81,1) 81.7% )'
 export const greenGradientColor = 'linear-gradient( 110deg,  rgba(37,219,137,1) 7.8%, rgba(151,243,202,1) 91.6% )'
 export const blueGradientColor = 'linear-gradient( 249.1deg,  rgba(11,206,250,1) -6.5%, rgba(65,46,248,1) 100.2% )'
+export const geminiGradientColor = 'linear-gradient( 109.6deg,  rgba(119,44,232,0.68) 11.5%, rgba(119,44,232,1) 91.2% )'
 
 export const getColorLevel = (color: string, level: number = 100): string => {
     let red: number

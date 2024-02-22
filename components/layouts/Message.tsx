@@ -2,16 +2,18 @@
 'use client'
 import { FC, memo, useEffect, useRef, useState } from 'react'
 import styles from '@/components/layouts/message.module.sass'
-import Image from 'next/image'
 import { IoCheckmarkCircleOutline, IoCopyOutline } from 'react-icons/io5'
 import IMessage from '@/interfaces/message'
 import { ref, set } from 'firebase/database'
 import db from '@/firebase/db'
 import { useMessageContext } from '@/providers/MessageProvider'
-import parse from 'html-react-parser'
 import Button from '@/components/forms/Button'
-import { getColorLevel, mainColor } from '@/components/variables'
-import { mainGradientColor } from '@/app/variables'
+import { getColorLevel, mainGradientColor, mainColor, geminiColor, geminiGradientColor } from '@/components/variables'
+import { useModeContext } from '@/providers/ModeProvider'
+import { SiGooglebard, SiNintendogamecube } from 'react-icons/si'
+import Markdown from 'react-markdown'
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
 
 interface MessageProps {
     id: string
@@ -29,8 +31,9 @@ const Message: FC<MessageProps> = ({
 
     const [messageText, setMessageText] = useState<string>('')
     const messageRef = useRef<HTMLDivElement>(null)
-    const textResultRef = useRef<HTMLSpanElement>(null)
+    const textResultRef = useRef<HTMLUListElement>(null)
 
+    const { mode } = useModeContext()
     const { setIsMessageComplete } = useMessageContext()
 
     const copyToClipboard = (): void => {
@@ -47,7 +50,7 @@ const Message: FC<MessageProps> = ({
                 setMessageText(text.slice(0, index))
                 index++
                 let parentElement = messageRef.current!.parentNode as Element
-                const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight - 25
+                const isAtBottom = parentElement!.scrollTop + parentElement!.clientHeight >= parentElement!.scrollHeight - 40
                 isAtBottom && (parentElement!.scrollTop = parentElement!.scrollHeight)
                 index > text.length && clearInterval(textInterval)
             }, 20)
@@ -64,7 +67,7 @@ const Message: FC<MessageProps> = ({
                 isResult: true,
             }
             const userId = localStorage.getItem('DAIBL_userId')
-            userId && set(ref(db, `/data/${userId}/messages/${id}`), newMessage)
+            userId && set(ref(db, `/${mode}/${userId}/messages/${id}`), newMessage)
             setIsMessageComplete(true)
         }
     }, [messageText, id, text, isResult, isComplete, setIsMessageComplete])
@@ -75,7 +78,10 @@ const Message: FC<MessageProps> = ({
             ref={messageRef}
         >
             {isResult ? (
-                <p className={styles._result}>
+                <div
+                    className={styles._result}
+                    style={{ border: `1px solid ${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 10)}` }}
+                >
                     {
                         isComplete && (
                             <a href='#' className={styles._copy}>
@@ -85,7 +91,7 @@ const Message: FC<MessageProps> = ({
                                     iconSize={22}
                                     width={32}
                                     height={32}
-                                    theme={'light'}
+                                    theme={mode === 'daibl' ? 'light' : 'geminiLight'}
                                     borderRadius={5}
                                     onClick={copyToClipboard}
                                 />
@@ -94,24 +100,29 @@ const Message: FC<MessageProps> = ({
                     }
                     <span
                         style={{
-                            border: `1px solid ${getColorLevel(mainColor, 5)}`,
-                            background: `${getColorLevel(mainColor, 5)}`
+                            border: `1px solid ${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 5)}`,
+                            background: `${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 5)}`
                         }}
                     >
-                        <Image
-                            src={'/images/common/logo.png'}
-                            alt='DaiBL Logo'
-                            width={25}
-                            height={25}
-                        />
+                        {
+                            mode === 'daibl'
+                                ? <SiNintendogamecube style={{ color: mainColor }} />
+                                : <SiGooglebard style={{ color: geminiColor }} />
+                        }
                         {isComplete ? (
-                            <>Đã trả lời xong <IoCheckmarkCircleOutline style={{ color: mainColor }} /></>
+                            <>
+                                Đã trả lời xong
+                                <IoCheckmarkCircleOutline style={{ color: mode === 'daibl' ? mainColor : geminiColor }} />
+                            </>
                         ) : (
                             <>
                                 {
                                     messageText.length === text.length
-                                        ? <>Đã trả lời xong <IoCheckmarkCircleOutline /></>
-                                        : `DAIBL đang tạo câu trả lời ...`
+                                        ? <>
+                                            Đã trả lời xong
+                                            <IoCheckmarkCircleOutline style={{ color: mode === 'daibl' ? mainColor : geminiColor }} />
+                                        </>
+                                        : `${mode.toUpperCase()} đang tạo câu trả lời ...`
                                 }
                             </>
                         )}
@@ -120,11 +131,29 @@ const Message: FC<MessageProps> = ({
                         className={styles._result__text}
                         ref={textResultRef}
                     >
-                        {parse(isComplete ? text : messageText)}
+                        {isComplete
+                            ? <Markdown 
+                                rehypePlugins={[rehypeRaw, remarkGfm]}
+                                components={{}}
+                            >
+                                {text}
+                            </Markdown>
+                            : <Markdown 
+                                rehypePlugins={[rehypeRaw, remarkGfm]}
+                                components={{}}
+                            >
+                                {messageText}
+                            </Markdown>
+                        }
                     </span>
-                </p>
+                </div>
             ) : (
-                <p className={styles._comment} >
+                <p
+                    className={styles._comment}
+                    style={{
+                        background: mode === 'daibl' ? mainGradientColor : geminiGradientColor
+                    }}
+                >
                     {text}
                 </p>
             )}

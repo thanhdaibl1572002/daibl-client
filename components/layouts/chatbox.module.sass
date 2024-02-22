@@ -31,22 +31,21 @@
         display: flex
         flex-direction: column
         row-gap: 20px
-        padding: 75px 15px 10px 15px
+        padding: 70px 15px 0 15px
         overflow-y: scroll
+        overflow-x: hidden
         position: relative
 
     ._generating
         font-size: 14px
         text-transform: capitalize
         font-weight: 500
-        color: $main-color
         position: absolute
         bottom: 75px
         left: 50%
         transform: translateX(-50%)
         background: $white-color
         box-shadow: 0 0 2px 0 get-color-level($black-color, 5)
-        border: 1px solid get-color-level($main-color, 30)
         padding: 6px 8px
         border-radius: 5px
         display: flex
@@ -63,20 +62,17 @@
             display: block
             margin: 5px auto
             position: relative
+    
+        ._daibl__generating
+            animation: daiblShadowPulse 1s linear infinite
             background: get-color-level($main-color, 20)
             box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 get-color-level($main-color, 20)
-            animation: shadowPulse 1s linear infinite
 
-            @keyframes shadowPulse
-                33%
-                    background: get-color-level($main-color, 20)
-                    box-shadow: -8px 0 $main-color, 8px 0 get-color-level($main-color, 20)
-                66%
-                    background: $main-color
-                    box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 get-color-level($main-color, 20)
-                100%
-                    background: get-color-level($main-color, 20)
-                    box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 $main-color
+        ._gemini__generating
+            animation: geminiShadowPulse 1s linear infinite
+            background: get-color-level($gemini-color, 20)
+            box-shadow: -8px 0 get-color-level($gemini-color, 20), 8px 0 get-color-level($gemini-color, 20)
+
 
     ._scroll__end
         position: fixed
@@ -89,8 +85,34 @@
         @media ( max-width: 750px )
             right: 20px
 
+    ._loading
+        display: flex
+        column-gap: 20px
+        background: $white-color
+        max-width: 85%
+
+
     @media ( max-width: 750px )
         width: 100%
         
+@keyframes daiblShadowPulse
+    33%
+        background: get-color-level($main-color, 20)
+        box-shadow: -8px 0 $main-color, 8px 0 get-color-level($main-color, 20)
+    66%
+        background: $main-color
+        box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 get-color-level($main-color, 20)
+    100%
+        background: get-color-level($main-color, 20)
+        box-shadow: -8px 0 get-color-level($main-color, 20), 8px 0 $main-color
 
-
+@keyframes geminiShadowPulse
+    33%
+        background: get-color-level($gemini-color, 20)
+        box-shadow: -8px 0 $gemini-color, 8px 0 get-color-level($gemini-color, 20)
+    66%
+        background: $gemini-color
+        box-shadow: -8px 0 get-color-level($gemini-color, 20), 8px 0 get-color-level($gemini-color, 20)
+    100%
+        background: get-color-level($gemini-color, 20)
+        box-shadow: -8px 0 get-color-level($gemini-color, 20), 8px 0 $gemini-color

@@ -4,13 +4,13 @@ import Image from 'next/image'
 import { mainColor } from '@/components/variables'
 
 interface LoadMoreProps {
-
+  color?: string
 }
   
-  const LoadMore: FC<LoadMoreProps> = ({}) => {
+  const LoadMore: FC<LoadMoreProps> = ({ color = mainColor }) => {
     return (
       <div className={styles._container}>
-        <span></span>
+        <span style={{ color: color }}></span>
       </div>
     )
   }
