@@ -118,7 +118,7 @@ const SendMessage: FC = () => {
                     width={'100%'}
                     height={'fit-content'}
                     inputWidth={'100%'}
-                    inputHeight={50}
+                    inputHeight={'fit-content'}
                     padding='10px 55px 10px 12px'
                     border={`1px solid ${getColorLevel(mode === 'daibl' ? mainColor : geminiColor, 20)}`}
                     placeholder={mode === 'daibl' ? 'Phân loại bình luận với DAIBL' : 'Trò chuyện với Gemini AI'}
