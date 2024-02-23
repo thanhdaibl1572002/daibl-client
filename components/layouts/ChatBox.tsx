@@ -54,6 +54,11 @@ const ChatBox: FC = () => {
     isScrollEnd && (messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight)
   }, [data, isScrollEnd])
 
+  useEffect(() => {
+    messagesRef.current!.scrollTop = messagesRef.current!.scrollHeight
+    setLimit(10)
+  }, [mode])
+
   const handleScroll = (event: UIEvent<HTMLDivElement>) => {
     const isAtTop = event.currentTarget.scrollTop === 0
     const isAtBottom = event.currentTarget.scrollTop + event.currentTarget.clientHeight >= event.currentTarget.scrollHeight - 30
