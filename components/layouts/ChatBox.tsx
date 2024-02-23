@@ -83,7 +83,7 @@ const ChatBox: FC = () => {
           logoIcon={mode === 'daibl' ? <SiNintendogamecube /> : <SiGooglebard />}
         />
         <Button
-          label={mode === 'daibl' ? 'GEMINI' : 'DAIBL'}
+          label={mode === 'daibl' ? 'Chat với GEMINI' : 'Chat với DAIBL'}
           icon={useMemo(() => mode === 'daibl' ? <SiGooglebard /> : <SiNintendogamecube />, [mode])}
           iconSize={21}
           textSize={15}
