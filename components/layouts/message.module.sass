@@ -45,20 +45,31 @@
             line-height: 25px
             color: $black-color
             padding: 0
-
-            strong
-                font-weight: 600
             
             ul, ol
                 display: flex
                 flex-direction: column
                 row-gap: 10px
 
+            pre, code, p, a, strong, li
+                white-space: pre-wrap
+                max-width: 100%
+                word-wrap: break-word
+
+            pre
+                width: 100%
+                color: $gemini-color
+                border: 1px solid get-color-level($main-color, 5)
+                border-radius: 5px
+                padding: 10px
+                background: get-color-level($main-color, 3)
+                font-size: 14px
+                
             a
                 color: $main-color
 
-            pre, code
-                white-space: pre-wrap
+            strong
+                font-weight: 600
 
             table
                 border-collapse: collapse

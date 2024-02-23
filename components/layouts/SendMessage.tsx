@@ -116,7 +116,7 @@ const SendMessage: FC = () => {
             >
                 <TextArea
                     width={'100%'}
-                    height={50}
+                    height={'fit-content'}
                     inputWidth={'100%'}
                     inputHeight={50}
                     padding='10px 55px 10px 12px'
